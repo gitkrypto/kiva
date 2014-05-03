@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  block_id: 1
+  native_id: MyString
+  amount_nqt: 9.99
+  fee_nqt: 9.99
+  sender_id: MyString
+  recipient_id: MyString
+
+two:
+  block_id: 1
+  native_id: MyString
+  amount_nqt: 9.99
+  fee_nqt: 9.99
+  sender_id: MyString
+  recipient_id: MyString

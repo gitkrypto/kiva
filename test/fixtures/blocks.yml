@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  height: 1
+  generator_id: MyString
+  total_amount_nqt: 9.99
+  total_fee_nqt: 9.99
+  total_pos_reward_nqt: 9.99
+
+two:
+  height: 1
+  generator_id: MyString
+  total_amount_nqt: 9.99
+  total_fee_nqt: 9.99
+  total_pos_reward_nqt: 9.99

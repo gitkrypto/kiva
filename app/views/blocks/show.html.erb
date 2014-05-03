@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Height:</strong>
+  <%= @block.height %>
+</p>
+
+<p>
+  <strong>Generator:</strong>
+  <%= @block.generator_id %>
+</p>
+
+<p>
+  <strong>Total amount nqt:</strong>
+  <%= @block.total_amount_nqt %>
+</p>
+
+<p>
+  <strong>Total fee nqt:</strong>
+  <%= @block.total_fee_nqt %>
+</p>
+
+<p>
+  <strong>Total pos reward nqt:</strong>
+  <%= @block.total_pos_reward_nqt %>
+</p>
+
+<%= link_to 'Edit', edit_block_path(@block) %> |
+<%= link_to 'Back', blocks_path %>

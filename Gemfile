@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0'
+gem 'bootstrap-sass', '2.3.2.0'
+gem 'sprockets', '2.11.0'
+gem 'will_paginate', '3.0.4'
+gem 'bootstrap-will_paginate', '0.0.9'
 
 group :production do
   gem 'mysql2'
@@ -14,6 +18,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'factory_girl_rails', '4.2.1'
   gem 'selenium-webdriver', '2.35.1'
   gem 'minitest'
   gem 'capybara', '2.1.0'

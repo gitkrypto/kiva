@@ -1,0 +1,28 @@
+<table class="table table-striped" id="txs">
+  <tbody>
+    <tr>
+      <th colspan="3">Latest Transactions
+        <span style="float:right;display:inline;font-size:14px;">
+          <a href="/transactions"><b>More...</b></a>
+        </span>
+      </th>
+    </tr>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td>
+          <div style="display: block;">
+            <%= link_to transaction.native_id, transaction %>
+          </div>
+        </td>
+        <td class="hidden-phone" data-time="<%= transaction.timestamp %>"><%= convert_timestamp transaction.timestamp %></td>
+        <td>
+          <div style="display: block;">
+            <button class="btn btn-success cb">
+              <span data-c="<%= transaction.amount_nqt %>"><%= convert_to_nxt transaction.amount_nqt %></span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

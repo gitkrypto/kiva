@@ -1,29 +1,113 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Blockexplorer Block ##{@block.height}") %> 
+<h1 style="padding-bottom:10px">Block #<%= @block.height %></h1>
+<div class="row-fluid">
+  <div class="span6">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th colspan="2">Summary</th>
+        </tr>
+        <tr>
+          <td>Number Of Transactions</td>
+          <td><%= @block.transactions.count %></td>
+        </tr>
+        <tr>
+          <td>Total Amount</td>
+          <td><span data-c="<%= @block.total_amount_nqt %>" data-time="<%= @block.timestamp %>"><%= convert_to_nxt @block.total_amount_nqt %></span></td>
+        </tr>
+        <tr>
+          <td>Total Fees</td>
+          <td><span data-c="<%= @block.total_fee_nqt %>" data-time="<%= @block.timestamp %>"><%= convert_to_nxt @block.total_fee_nqt %></td>
+        </tr>
+        <tr>
+          <td>Generator</td>
+          <td><%= link_to @block.account.native_id, @block.account %></td>
+        </tr>
+        <tr>
+          <td><strong>Block Reward</strong></td>
+          <td><strong><%= convert_to_nxt @block.total_pos_nqt %></strong></td>
+        </tr>  
+        <tr>
+          <td>Height</td>
+          <td><%= @block.height %></td>
+        </tr>
+        <tr>
+          <td>Timestamp</td>
+          <td><%= convert_timestamp @block.timestamp %></td>
+        </tr>
+        <tr>
+          <td>Cumulative Difficulty</td>
+          <td><%= @block.cumulative_difficulty %></td>
+        </tr>
+        <tr>
+          <td>Base Target</td>
+          <td><%= @block.base_target %></td>
+        </tr>        
+        <tr>
+          <td>Payload Size</td>
+          <td><%= @block.payload_length %> Bytes</td>
+        </tr>
+        <tr>
+          <td>Version</td>
+          <td><%= @block.version %></td>
+        </tr>
+        <tr>
+          <td>Previous Block</td>
+          <td>
+            <% if @block.previous_block %>
+              <%= link_to @block.previous_block.native_id, @block.previous_block %>
+            <% end %>
+          </td>
+        </tr>    
+        <tr>
+          <td>Next Block</td>
+          <td>
+            <% if @block.next_block %>
+              <%= link_to @block.next_block.native_id, @block.next_block %>
+            <% end %>
+          </td>
+        </tr> 
+      </tbody>
+    </table>
+  </div>
 
-<p>
-  <strong>Height:</strong>
-  <%= @block.height %>
-</p>
+  <div class="span6">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th colspan="2">Hashes</th>
+        </tr>
+        <tr>
+          <td>Payload</td>
+          <td><%= @block.payload_hash %></td>
+        </tr>
+        <tr>
+          <td>Block Signature</td>
+          <td><%= @block.block_signature %></td>
+        </tr>
+        <tr>
+          <td>Generation Signature</td>
+          <td><%= @block.generation_signature %></td>
+        </tr>
+        <tr>
+          <td>Previous Block</td>
+          <td>
+            <% if @block.previous_block %>
+              <%= link_to @block.previous_block.block_signature, @block.previous_block %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td>Next Block</td>
+          <td>
+            <% if @block.next_block %>
+              <%= link_to @block.next_block.block_signature, @block.next_block %>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<p>
-  <strong>Generator:</strong>
-  <%= @block.generator_id %>
-</p>
 
-<p>
-  <strong>Total amount nqt:</strong>
-  <%= @block.total_amount_nqt %>
-</p>
-
-<p>
-  <strong>Total fee nqt:</strong>
-  <%= @block.total_fee_nqt %>
-</p>
-
-<p>
-  <strong>Total pos reward nqt:</strong>
-  <%= @block.total_pos_reward_nqt %>
-</p>
-
-<%= link_to 'Edit', edit_block_path(@block) %> |
-<%= link_to 'Back', blocks_path %>

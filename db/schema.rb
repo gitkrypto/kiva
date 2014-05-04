@@ -11,27 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140503181054) do
+ActiveRecord::Schema.define(version: 20140503175909) do
+
+  create_table "accounts", force: true do |t|
+    t.string  "native_id"
+    t.decimal "balance_nqt"
+    t.string  "public_key"
+  end
 
   create_table "blocks", force: true do |t|
-    t.integer  "height"
-    t.string   "generator_id"
-    t.decimal  "total_amount_nqt"
-    t.decimal  "total_fee_nqt"
-    t.decimal  "total_pos_reward_nqt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "native_id"
+    t.integer "account_id"
+    t.integer "timestamp"
+    t.integer "height"
+    t.integer "payload_length"
+    t.string  "payload_hash"
+    t.string  "generation_signature"
+    t.string  "block_signature"
+    t.decimal "base_target"
+    t.decimal "cumulative_difficulty"
+    t.decimal "total_amount_nqt"
+    t.decimal "total_fee_nqt"
+    t.decimal "total_pos_nqt"
+    t.integer "version"
+    t.integer "previous_block"
+    t.integer "next_block"
   end
 
   create_table "transactions", force: true do |t|
-    t.integer  "block_id"
-    t.string   "native_id"
-    t.decimal  "amount_nqt"
-    t.decimal  "fee_nqt"
-    t.string   "sender_id"
-    t.string   "recipient_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "native_id"
+    t.integer "timestamp"
+    t.integer "block_id"
+    t.integer "sender"
+    t.integer "recipient"
+    t.decimal "amount_nqt"
+    t.decimal "fee_nqt"
   end
 
 end

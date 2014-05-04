@@ -1,35 +1,10 @@
-<h1>Listing transactions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Block</th>
-      <th>Native</th>
-      <th>Amount nqt</th>
-      <th>Fee nqt</th>
-      <th>Sender</th>
-      <th>Recipient</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @transactions.each do |transaction| %>
-      <tr>
-        <td><%= transaction.block_id %></td>
-        <td><%= transaction.native_id %></td>
-        <td><%= transaction.amount_nqt %></td>
-        <td><%= transaction.fee_nqt %></td>
-        <td><%= transaction.sender_id %></td>
-        <td><%= transaction.recipient_id %></td>
-        <td><%= link_to 'Show', transaction %></td>
-        <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
-        <td><%= link_to 'Destroy', transaction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Transaction', new_transaction_path %>
+<% provide(:title, 'Blockexplorer | Transactions') %>
+<h1>
+  <small>Listing Transactions</small>
+</h1>
+<div class="row-fluid">
+  <div class="span12">
+    <%= will_paginate%>
+    <%= render "table" %>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<header class="navbar navbar-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to "FIMK blockexplorer", '/', id: "logo", class: 'nav'  %>
+      <nav>
+        <ul class="nav">
+          <li><%= link_to "Home",    '/' %></li>
+          <li><%= link_to "Blocks",    '/blocks' %></li>
+          <li><%= link_to "Transactions",    '/transactions' %></li>
+          <li><%= link_to "Accounts",    '/accounts' %></li>
+        </ul>
+      </nav>
+      <form action="/search" method="GET" class="navbar-search pull-right hidden-phone">
+        <input type="text" placeholder="Search" name="search" class="search-query">
+      </form>      
+    </div>
+  </div>
+</header>
+

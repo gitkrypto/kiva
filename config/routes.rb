@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  get 'static_pages/home'
+  root 'static_pages#home'
 
-  resources :transactions
-  resources :blocks
+  resources :transactions,  only: [:show, :index] 
+  resources :blocks,        only: [:show, :index] 
+  resources :accounts,      only: [:show, :index] 
+  
+  get '/search',            to:   'search#search'
+  get '/search/:search',    to:   'search#search'
 end

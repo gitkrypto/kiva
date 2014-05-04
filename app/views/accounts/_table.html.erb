@@ -1,0 +1,18 @@
+<table class="table table-striped" id="blocks">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Public Key</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @accounts.each do |account| %>
+      <tr>
+        <td><%= link_to account.native_id, account %></td>
+        <td><%= link_to account.public_key, account %></td>
+        <td class="align-right" data-balance="<%= account.balance_nqt %>"><%= convert_to_nxt account.balance_nqt %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,34 +1,4 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Blockexplorer Transaction ##{@transaction.native_id}") %> 
+<h1 style="padding-bottom:10px">Transaction #<%= @transaction.native_id %></h1>
 
-<p>
-  <strong>Block:</strong>
-  <%= @transaction.block_id %>
-</p>
-
-<p>
-  <strong>Native:</strong>
-  <%= @transaction.native_id %>
-</p>
-
-<p>
-  <strong>Amount nqt:</strong>
-  <%= @transaction.amount_nqt %>
-</p>
-
-<p>
-  <strong>Fee nqt:</strong>
-  <%= @transaction.fee_nqt %>
-</p>
-
-<p>
-  <strong>Sender:</strong>
-  <%= @transaction.sender_id %>
-</p>
-
-<p>
-  <strong>Recipient:</strong>
-  <%= @transaction.recipient_id %>
-</p>
-
-<%= link_to 'Edit', edit_transaction_path(@transaction) %> |
-<%= link_to 'Back', transactions_path %>
+<h1>Under construction</h1>

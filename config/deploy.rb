@@ -8,7 +8,7 @@ set :repo_url, 'https://github.com/gitkrypto/kiva.git'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/u/apps/your_application_name_production'
+set :deploy_to, '/u/apps/kiva'
 
 # Use agent forwarding for SSH so you can deploy with the SSH key on your workstation.
 set :ssh_options, {

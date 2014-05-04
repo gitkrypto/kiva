@@ -7,6 +7,9 @@ gem 'bootstrap-sass', '2.3.2.0'
 gem 'sprockets', '2.11.0'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
+gem 'rufus-scheduler', '3.0.7'
+gem 'rest-client', '~> 1.6.7'
+gem 'json', '~> 1.8.1'
 
 group :production do
   gem 'mysql2'

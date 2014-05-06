@@ -2,8 +2,19 @@ module NXT
   class Commander
     
     def initialize
-      @api    = API.new('localhost', 7886)
+      @api    = API.new(nxtnode_host, 7886)
       @height = 0
+    end
+    
+    def nxtnode_host
+      @nxtnode_host ||= begin
+        path = "/home/deploy/nxt.json"
+        if File.exists? path
+          JSON.parse(File.open(path, "rb").read)['nodes'].first  
+        else
+          '95.85.30.207'
+        end
+      end
     end
     
     def poll

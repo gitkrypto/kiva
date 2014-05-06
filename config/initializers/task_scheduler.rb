@@ -4,7 +4,6 @@ require 'nxt'
 scheduler   = Rufus::Scheduler.new
 commander   = NXT::Commander.new
 
-scheduler.every '100s' do
-  # Disabled
-  #commander.poll
+scheduler.every '5s' do
+  commander.poll
 end

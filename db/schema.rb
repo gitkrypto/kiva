@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140503175909) do
+ActiveRecord::Schema.define(version: 20140506191611) do
 
   create_table "accounts", force: true do |t|
     t.string  "native_id"
-    t.decimal "balance_nqt"
+    t.integer "balance_nqt", limit: 8
     t.string  "public_key"
   end
 
@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20140503175909) do
     t.string  "block_signature"
     t.decimal "base_target"
     t.decimal "cumulative_difficulty"
-    t.decimal "total_amount_nqt"
-    t.decimal "total_fee_nqt"
-    t.decimal "total_pos_nqt"
+    t.integer "total_amount_nqt",      limit: 8
+    t.integer "total_fee_nqt",         limit: 8
+    t.integer "total_pos_nqt",         limit: 8
     t.integer "version"
     t.integer "previous_block"
     t.integer "next_block"
@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 20140503175909) do
     t.integer "block_id"
     t.integer "sender"
     t.integer "recipient"
-    t.decimal "amount_nqt"
-    t.decimal "fee_nqt"
+    t.integer "amount_nqt", limit: 8
+    t.integer "fee_nqt",    limit: 8
   end
 
 end

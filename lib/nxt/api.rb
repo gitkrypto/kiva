@@ -4,6 +4,11 @@ module NXT
     def initialize(host, port)
       @url  = "http://#{host}:#{port}/nxt"
     end
+    
+    # This is required since this class is run from an initializer
+    def logger
+      Rails.logger
+    end
   
     def get(requestType, params={}) 
       params['requestType'] = requestType

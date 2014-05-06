@@ -6,6 +6,11 @@ module NXT
       @height = 0
     end
     
+    # This is required since this class is run from an initializer
+    def logger
+      Rails.logger
+    end
+    
     def nxtnode_host
       @nxtnode_host ||= begin
         path = "/home/deploy/nxt.json"
@@ -26,10 +31,9 @@ module NXT
     # Always go back 50 blocks from the current height in order to find forks 
     def poll_internal
       
-      Rails.logger.info "###############################################################################"
-      Rails.logger.info "HELLO"
-      Rails.logger.info "###############################################################################"
-      Rails.logger.flush
+      logger.info "###############################################################################"
+      logger.info "HELLO"
+      logger.info "###############################################################################"
       
       response    = @api.getBlocksIdsFromHeight([0, @height-50].max)
       fromHeight  = response['fromHeight']

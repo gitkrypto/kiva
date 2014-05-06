@@ -21,6 +21,10 @@ GEM
       activemodel (= 4.1.0)
       activesupport (= 4.1.0)
       arel (~> 5.0.0)
+    activerecord-mysql-unsigned (0.1.0)
+      activerecord (>= 3.2, <= 4.1)
+      activesupport (>= 3.2, <= 4.1)
+      mysql2
     activesupport (4.1.0)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -181,6 +185,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-mysql-unsigned
   bootstrap-sass (= 2.3.2.0)
   bootstrap-will_paginate (= 0.0.9)
   capistrano (~> 3.1.0)

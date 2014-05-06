@@ -13,6 +13,7 @@ gem 'json', '~> 1.8.1'
 
 group :production do
   gem 'mysql2'
+  gem 'activerecord-mysql-unsigned'
 end
 
 group :development, :test do

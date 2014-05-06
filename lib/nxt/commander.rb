@@ -30,8 +30,7 @@ module NXT
     
     # Always go back 50 blocks from the current height in order to find forks 
     def poll_internal
-      #response    = @api.getBlocksIdsFromHeight([0, @height-50].max)
-      response    = @api.getBlocksIdsFromHeight(@height, @height + 20)
+      response    = @api.getBlocksIdsFromHeight(0, 1440)
       fromHeight  = response['fromHeight']
       ids         = response['blockIds']
       return unless ids
@@ -99,8 +98,6 @@ module NXT
             :fee_nqt          => json['fee_nqt']
           })
         end
-        
-        @height = block.height
       end      
     end
   end

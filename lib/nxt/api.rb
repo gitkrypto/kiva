@@ -9,7 +9,8 @@ module NXT
       params['requestType'] = requestType
       json = RestClient.get @url, {:params => params, :timeout => 10, :open_timeout => 10}
       obj = JSON.parse json
-      puts json
+      logger.info json
+      logger.flush
       obj
     end
     

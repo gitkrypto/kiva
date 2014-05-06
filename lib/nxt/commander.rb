@@ -26,8 +26,6 @@ module NXT
     # Always go back 50 blocks from the current height in order to find forks 
     def poll_internal
       
-      logger.info "Polling along nicely "
-      
       response    = @api.getBlocksIdsFromHeight([0, @height-50].max)
       fromHeight  = response['fromHeight']
       ids         = response['blockIds']

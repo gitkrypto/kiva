@@ -3,7 +3,8 @@ class CreateTables < ActiveRecord::Migration
     
     create_table :accounts do |t|
       t.string      :native_id
-      t.column      :balance_nqt,         :integer, :limit => 8, :precision => :unsigned, :scale => 0
+      #t.column      :balance_nqt,         :integer, :limit => 8, :precision => 20, :scale => 0
+      t.column      :balance_nqt,         'BIGINT UNSIGNED'
       t.string      :public_key
     end
     
@@ -18,9 +19,12 @@ class CreateTables < ActiveRecord::Migration
       t.string      :block_signature
       t.decimal     :base_target
       t.decimal     :cumulative_difficulty
-      t.column      :total_amount_nqt,    :integer, :limit => 8, :precision => :unsigned, :scale => 0
-      t.column      :total_fee_nqt,       :integer, :limit => 8, :precision => :unsigned, :scale => 0
-      t.column      :total_pos_nqt,       :integer, :limit => 8, :precision => :unsigned, :scale => 0
+      #t.column      :total_amount_nqt,    :integer, :limit => 8, :precision => 20, :scale => 0
+      #t.column      :total_fee_nqt,       :integer, :limit => 8, :precision => 20, :scale => 0
+      #t.column      :total_pos_nqt,       :integer, :limit => 8, :precision => 20, :scale => 0
+      t.column      :total_amount_nqt,    'BIGINT UNSIGNED'
+      t.column      :total_fee_nqt,       'BIGINT UNSIGNED'
+      t.column      :total_pos_nqt,       'BIGINT UNSIGNED'
       t.integer     :version
       t.integer     :previous_block       # foreign key to blocks
       t.integer     :next_block           # foreign key to blocks
@@ -32,8 +36,10 @@ class CreateTables < ActiveRecord::Migration
       t.belongs_to  :block  
       t.integer     :sender               # foreign key to accounts
       t.integer     :recipient            # foreign key to accounts
-      t.column      :amount_nqt,          :integer, :limit => 8, :precision => :unsigned, :scale => 0
-      t.column      :fee_nqt,             :integer, :limit => 8, :precision => :unsigned, :scale => 0
+      #t.column      :amount_nqt,          :integer, :limit => 8, :precision => 20, :scale => 0
+      #t.column      :fee_nqt,             :integer, :limit => 8, :precision => 20, :scale => 0
+      t.column      :amount_nqt,          'BIGINT UNSIGNED'
+      t.column      :fee_nqt,             'BIGINT UNSIGNED'
     end      
   end
 end

@@ -11,8 +11,8 @@ module Kiva
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
     config.autoload_paths += %W( #{config.root}/app/nxt )
     config.autoload_paths += %W( #{config.root}/lib )
-    
     config.logger = Rails.logger
+    config.active_record.schema_format = :sql
     
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

@@ -17,6 +17,8 @@ gem 'json', '~> 1.8.1'
 # To do so, add gem "daemons" to your Gemfile and make sure you've run rails generate delayed_job.
 #gem "daemons"
 
+gem 'rb-readline'
+
 group :production do
   gem 'mysql2'
   gem 'activerecord-mysql-unsigned'

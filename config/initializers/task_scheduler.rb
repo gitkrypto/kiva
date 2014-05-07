@@ -3,12 +3,12 @@ require 'nxt'
 
 def execute_scheduler
     # Create your scheduler here
-    scheduler   = Rufus::Scheduler.start_new  
+    scheduler   = Rufus::Scheduler.new  
     logger      = Logger.new(Rails.root.to_s + "/log/scheduler.log")
     commander   = NXT::Commander.new
 
     # Test job
-    scheduler.every("5s") do  
+    scheduler.interval("10s") do  
       logger.info "Log"
       commander.poll
     end

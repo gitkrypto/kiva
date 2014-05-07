@@ -11,8 +11,9 @@ set :repo_url, 'https://github.com/gitkrypto/kiva.git'
 set :deploy_to, '/u/apps/kiva'
 
 # Use agent forwarding for SSH so you can deploy with the SSH key on your workstation.
-set :ssh_options, {
+set :ssh_options, {  
   forward_agent: true
+#  keys:  %w(/home/dirk/.ssh/id_rsa.gitkrypto)
 }
 
 # Default value for :pty is false

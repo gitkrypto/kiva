@@ -11,6 +11,12 @@ gem 'rufus-scheduler', '3.0.7'
 gem 'rest-client', '~> 1.6.7'
 gem 'json', '~> 1.8.1'
 
+# If you are using the protected_attributes gem, it must appear before delayed_job in your gemfile.
+#gem 'delayed_job_active_record', '~> 4.0.1'
+# script/delayed_job can be used to manage a background process which will start working off jobs.
+# To do so, add gem "daemons" to your Gemfile and make sure you've run rails generate delayed_job.
+#gem "daemons"
+
 group :production do
   gem 'mysql2'
   gem 'activerecord-mysql-unsigned'

@@ -3,6 +3,7 @@ lock '3.1.0'
 
 set :application, 'kiva'
 set :repo_url, 'https://github.com/gitkrypto/kiva.git'
+set :branch, "master"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -13,7 +14,6 @@ set :deploy_to, '/u/apps/kiva'
 # Use agent forwarding for SSH so you can deploy with the SSH key on your workstation.
 set :ssh_options, {  
   forward_agent: true
-#  keys:  %w(/home/dirk/.ssh/id_rsa.gitkrypto)
 }
 
 # Default value for :pty is false

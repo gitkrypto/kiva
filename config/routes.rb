@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   
   get '/search',            to:   'search#search'
   get '/search/:search',    to:   'search#search'
+  
+  get '/transactions-json', to:   'transactions#latest'
 end

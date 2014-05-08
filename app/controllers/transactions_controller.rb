@@ -2,10 +2,16 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show]
 
   def index
-    @transactions = Transaction.paginate(page: params[:page], :per_page => 20)
+    @transactions = Transaction.order('block DESC').paginate(page: params[:page], :per_page => 20)
   end
 
   def show
+  end
+  
+  # json
+  def latest
+    #list = Transaction.limit(6).order("timestamp desc")
+    
   end
 
   private

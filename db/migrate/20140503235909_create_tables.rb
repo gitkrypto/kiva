@@ -3,38 +3,63 @@ class CreateTables < ActiveRecord::Migration
     
     create_table :accounts do |t|
       t.string      :native_id
-      t.integer     :balance_nqt,         limit: 8, unsigned: true, null: true
+      t.integer     :balance_nqt,         limit: 8, unsigned: true, default: 0
+      t.integer     :pos_balance_nqt,     limit: 8, unsigned: true, default: 0
       t.string      :public_key
-    end
+      t.string      :passphrase
+    end    
+    add_index :accounts, :native_id
     
     create_table :blocks do |t|
       t.string      :native_id
-      t.belongs_to  :account              # generator account
-      t.integer     :timestamp
+      t.integer     :generator           # generator account
+      t.integer     :timestamp,           default: 0
       t.integer     :height
-      t.integer     :payload_length
+      t.integer     :payload_length,      default: 0
       t.string      :payload_hash
       t.string      :generation_signature
       t.string      :block_signature
-      t.decimal     :base_target
-      t.decimal     :cumulative_difficulty
-      t.integer     :total_amount_nqt,    limit: 8, unsigned: true, null: true
-      t.integer     :total_fee_nqt,       limit: 8, unsigned: true, null: true
-      t.integer     :total_pos_nqt,       limit: 8, unsigned: true, null: true
+      t.integer     :base_target,         limit: 8, unsigned: true, default: 0
+      t.integer     :cumulative_difficulty, limit: 8, unsigned: true, default: 0
+      t.integer     :total_amount_nqt,    limit: 8, unsigned: true, default: 0
+      t.integer     :total_fee_nqt,       limit: 8, unsigned: true, default: 0
+      t.integer     :total_pos_nqt,       limit: 8, unsigned: true, default: 0
       t.integer     :version
       t.integer     :previous_block       # foreign key to blocks
       t.integer     :next_block           # foreign key to blocks
-    end
+    end    
+    add_index :blocks, :generator
+    add_index :blocks, :height
+    add_index :blocks, :native_id
 
     create_table :transactions do |t|
       t.string      :native_id
-      t.integer     :timestamp
-      t.belongs_to  :block  
+      t.integer     :timestamp,           default: 0
+      t.integer     :block                # foreign key to blocks
       t.integer     :sender               # foreign key to accounts
       t.integer     :recipient            # foreign key to accounts
-      t.integer     :amount_nqt,          limit: 8, unsigned: true, null: true
-      t.integer     :fee_nqt,             limit: 8, unsigned: true, null: true
-    end      
+      t.integer     :amount_nqt,          limit: 8, unsigned: true, default: 0
+      t.integer     :fee_nqt,             limit: 8, unsigned: true, default: 0
+    end
+    add_index :transactions, :native_id
+    add_index :transactions, :block
+    add_index :transactions, :sender
+    add_index :transactions, :recipient
+    
+    create_table :pending_transactions do |t|
+      t.timestamps
+      t.integer     :sender               # foreign key to accounts
+      t.integer     :recipient            # foreign key to accounts
+      t.integer     :amount_nqt,          limit: 8, unsigned: true, default: 0
+      t.integer     :fee_nqt,             limit: 8, unsigned: true, default: 0
+      t.string      :native_id
+      t.string      :error_msg
+      t.integer     :error_code
+    end
+    add_index :pending_transactions, :sender
+    add_index :pending_transactions, :recipient
+    add_index :pending_transactions, :native_id
+          
   end
 end
 

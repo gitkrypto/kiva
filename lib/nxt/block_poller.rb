@@ -2,12 +2,10 @@ module NXT
   class BlockPoller    
     def perform(interval)
       loop do
-        ActiveRecord::Base.transaction do
-          opts = get_new_blocks
-          if opts[:blockIds]
-            remove_orphaned_blocks opts
-            add_new_blocks opts
-          end
+        opts = get_new_blocks
+        if opts[:blockIds]
+          remove_orphaned_blocks opts
+          add_new_blocks opts
         end
         puts "Going to sleep ... #{interval} seconds"
         sleep interval.to_i
@@ -28,14 +26,16 @@ module NXT
     # Scans blockIds and remove orphaned blocks
     # @param opts { blockIds: [], fromHeight: 1 }
     def remove_orphaned_blocks(opts)
-      opts[:blockIds].each_with_index do |native_id, index|
-        height = index + opts[:fromHeight]
-        block  = Block.where(:height => height).first
-        next unless block        
-        if block.native_id != native_id
-          undo(block)          
-          Transaction.where(:block => block).delete_all
-          Block.delete(block)
+      ActiveRecord::Base.transaction do
+        opts[:blockIds].each_with_index do |native_id, index|
+          height = index + opts[:fromHeight]
+          block  = Block.where(:height => height).first
+          next unless block        
+          if block.native_id != native_id
+            undo(block)          
+            Transaction.where(:block => block).delete_all
+            Block.delete(block)
+          end
         end
       end
     end
@@ -79,7 +79,6 @@ module NXT
 
       json['transactions'].each do |native_transaction_id|
         download_transaction(native_transaction_id, block)
-        remove_unconfirmed_status(native_transaction_id)        
       end
       
       apply(block)
@@ -88,21 +87,20 @@ module NXT
     # Downloads and stores a Transaction
     def download_transaction(native_id, block)
       json = NXT::api.getTransaction(native_id)
-      transaction = Transaction.create({
-        :native_id        => native_id,
-        :timestamp        => json['timestamp'],
-        :block            => block,
-        :sender           => get_account(json['sender']),
-        :recipient        => get_account(json['recipient']),
-        :amount_nqt       => json['amountNQT'],
-        :fee_nqt          => json['feeNQT']
-      })
+      ActiveRecord::Base.transaction do
+        transaction = Transaction.create({
+          :native_id        => native_id,
+          :timestamp        => json['timestamp'],
+          :block            => block,
+          :sender           => get_account(json['sender']),
+          :recipient        => get_account(json['recipient']),
+          :amount_nqt       => json['amountNQT'],
+          :fee_nqt          => json['feeNQT']
+        })
+        UnconfirmedTransaction.where(:native_id => native_id).delete_all
+      end
     end
     
-    def remove_unconfirmed_status(native_id)
-      UnconfirmedTransaction.where(:native_id => native_id).delete_all
-    end
-
     def logger
       Rails.logger
     end
@@ -120,29 +118,33 @@ module NXT
     end
     
     def apply(block)
-      block.generator.balance_nqt     += block.total_pos_nqt + block.total_fee_nqt
-      block.generator.pos_balance_nqt += block.total_pos_nqt
-      block.generator.save
-      
-      Transaction.where(block: block).each do |t|
-        t.sender.balance_nqt    -= t.amount_nqt + t.fee_nqt
-        t.recipient.balance_nqt += t.amount_nqt
-        t.sender.save
-        t.recipient.save          
-      end        
+      ActiveRecord::Base.transaction do
+        block.generator.balance_nqt     += block.total_pos_nqt + block.total_fee_nqt
+        block.generator.pos_balance_nqt += block.total_pos_nqt
+        block.generator.save
+        
+        Transaction.where(block: block).each do |t|
+          t.sender.balance_nqt    -= t.amount_nqt + t.fee_nqt
+          t.recipient.balance_nqt += t.amount_nqt
+          t.sender.save
+          t.recipient.save          
+        end        
+      end
     end
     
     def undo(block)
-      block.generator.balance_nqt     -= block.total_pos_nqt + block.total_fee_nqt
-      block.generator.pos_balance_nqt -= block.total_pos_nqt
-      block.generator.save
-      
-      Transaction.where(block: block).each do |t|
-        t.sender.balance_nqt    += t.amount_nqt + t.fee_nqt
-        t.recipient.balance_nqt -= t.amount_nqt
-        t.sender.save
-        t.recipient.save          
-      end        
+      ActiveRecord::Base.transaction do
+        block.generator.balance_nqt     -= block.total_pos_nqt + block.total_fee_nqt
+        block.generator.pos_balance_nqt -= block.total_pos_nqt
+        block.generator.save
+        
+        Transaction.where(block: block).each do |t|
+          t.sender.balance_nqt    += t.amount_nqt + t.fee_nqt
+          t.recipient.balance_nqt -= t.amount_nqt
+          t.sender.save
+          t.recipient.save          
+        end        
+      end
     end
   end
 end

@@ -2,11 +2,9 @@ module NXT
   class TransactionPoller    
     def perform(interval)
       loop do
-        ActiveRecord::Base.transaction do
-          opts = NXT::api.getUnconfirmedTransactionsIds
-          if opts.has_key? 'unconfirmedTransactionIds'
-            add_new_transactions opts['unconfirmedTransactionIds']
-          end
+        opts = NXT::api.getUnconfirmedTransactionsIds
+        if opts.has_key? 'unconfirmedTransactionIds'
+          add_new_transactions opts['unconfirmedTransactionIds']
         end
         puts "Going to sleep ... #{interval} seconds"
         sleep interval.to_i
@@ -24,7 +22,6 @@ module NXT
     # Downloads and stores a Transaction
     def download_transaction(native_id)
       json = NXT::api.getTransaction(native_id)
-
       # Create a new db transaction
       transaction = UnconfirmedTransaction.create!({
         :native_id        => native_id,

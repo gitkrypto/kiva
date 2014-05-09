@@ -68,8 +68,6 @@ class CreateTables < ActiveRecord::Migration
       t.string      :native_id
       t.integer     :timestamp,             default: 0
     end
-    
-    
     add_index :unconfirmed_transactions, :sender
     add_index :unconfirmed_transactions, :recipient
     add_index :unconfirmed_transactions, :native_id   

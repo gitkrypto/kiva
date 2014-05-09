@@ -1,5 +1,9 @@
 module NXT
   class AccountGenerator
+    def initialize(debug)
+      @debug = debug
+    end
+    
     def perform
       add_stakeholder_accounts
       add_csv_accounts
@@ -10,7 +14,7 @@ module NXT
       puts "Generating Stakeholder Accounts"
       ActiveRecord::Base.transaction do
         accounts  = Fuzzer::Genesis.accounts
-        #accounts  = accounts.slice(0..20) if NXT::DEBUG        
+        accounts  = accounts.slice(0..20) if @debug
         
         accounts.each_with_index do |native_id, index| 
           puts "Adding Stakeholder Account #{index} ..." if index % 100 == 0
@@ -25,7 +29,7 @@ module NXT
       puts "Generating Accounts From accounts.csv"
       count    = 0
       accounts = CSV.read("#{Rails.root}/lib/nxt/accounts.csv")
-      accounts = accounts.slice(0..600) if NXT::DEBUG      
+      accounts = accounts.slice(0..600) if @debug     
       accounts.each_slice(100) do |arr|
         puts "Adding Account #{count} ..." if count % 100 == 0
         ActiveRecord::Base.transaction do

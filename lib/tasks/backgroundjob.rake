@@ -4,8 +4,9 @@ require 'nxt'
 namespace :backgroundjob do
   
   # Adds all Accounts to the database
-  task generate_accounts: :environment  do
-    NXT::AccountGenerator.new.perform
+  task :generate_accounts, [:debug] => [:environment]  do |t, args|
+    args.with_defaults(:debug => false)
+    NXT::AccountGenerator.new(args[:debug]).perform
   end
   
   # Polls the nxt node for new blocks

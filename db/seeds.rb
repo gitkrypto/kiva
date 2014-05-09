@@ -16,7 +16,7 @@ def add_stakeholder_accounts
     accounts.each_with_index do |native_id, index| 
       puts "Adding Stakeholder Account #{index} ..." if index % 100 == 0
       passphrase  = Fuzzer::Genesis.keys[index] 
-    create_or_update_account({:native_id => native_id, :passphrase => passphrase})
+      create_or_update_account({:native_id => native_id, :passphrase => passphrase})
     end
   end
 end

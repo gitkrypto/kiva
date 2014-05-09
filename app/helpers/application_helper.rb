@@ -12,7 +12,7 @@ module ApplicationHelper
   
   # Converts a NXT timestamp to a date string
   def convert_timestamp(timestamp)
-  Time.at(DateTime.new(2013, 10, 24, 12, 0, 0, 0).to_time.to_i + timestamp).to_formatted_s(:long) rescue '-'
+    Time.at(DateTime.new(2013, 11, 24, 12, 0, 0, 0).to_time.to_i + timestamp).to_formatted_s(:long) rescue '-'
   end
   
   # Converts NQT to NXT for display purposes

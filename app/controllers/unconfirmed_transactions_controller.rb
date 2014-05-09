@@ -1,9 +1,9 @@
-class TransactionsController < ApplicationController
+class UnconfirmedTransactionsController < ApplicationController
   include ApplicationHelper
   before_action :set_transaction, only: [:show]
 
   def index
-    @transactions = Transaction.order('block DESC').paginate(page: params[:page], :per_page => 20)
+    @unconfirmed_transactions = UnconfirmedTransaction.order('id DESC').paginate(page: params[:page], :per_page => 20)
   end
 
   def show
@@ -28,7 +28,7 @@ class TransactionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transaction
-      @transaction = Transaction.find(params[:id])
+      @unconfirmed_transaction = UnconfirmedTransaction.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

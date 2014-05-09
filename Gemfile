@@ -19,10 +19,10 @@ gem 'json', '~> 1.8.1'
 
 gem 'rb-readline'
 
-group :production do
-  gem 'mysql2'
-  gem 'activerecord-mysql-unsigned'
-end
+#group :production do
+gem 'mysql2'
+gem 'activerecord-mysql-unsigned'
+#end
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'

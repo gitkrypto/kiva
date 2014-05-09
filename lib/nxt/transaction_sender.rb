@@ -12,20 +12,27 @@ module NXT
     
     def send_next_transaction
       sender    = random_account(true)
+      unless sender
+        puts "Could not obtain a random account for Transaction Sender"
+        return
+      end      
       recipient = random_account
-      amountNQT = sender.balance_nqt / rand(10)
+      amountNQT = sender.balance_nqt / (rand(10)+1)
       sendmoney(sender, recipient, amountNQT) 
     end
     
     def random_account(positive=false)
       if positive
-        Account.where('balance_nqt > 0').order("RANDOM()").first
+        Account.where('balance_nqt > 0').order("RAND()").first
       else
-        Account.order("RANDOM()").first
+        Account.order("RAND()").first
       end
     end
     
     def sendmoney(sender, recipient, amountNQT, feeNQT=1*NXT::ONE_NXT) 
+      
+      puts "Sendmoney sender=#{sender} #{sender.passphrase}"
+      
       t = PendingTransaction.create({
         :sender => sender, :recipient  => recipient, :amount_nqt => amountNQT, :fee_nqt => feeNQT 
       })

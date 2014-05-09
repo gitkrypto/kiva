@@ -79,6 +79,7 @@ module NXT
 
       json['transactions'].each do |native_transaction_id|
         download_transaction(native_transaction_id, block)
+        remove_unconfirmed_status(native_transaction_id)        
       end
       
       apply(block)
@@ -96,6 +97,10 @@ module NXT
         :amount_nqt       => json['amountNQT'],
         :fee_nqt          => json['feeNQT']
       })
+    end
+    
+    def remove_unconfirmed_status(native_id)
+      UnconfirmedTransaction.where(:native_id => native_id).delete_all
     end
 
     def logger
@@ -128,18 +133,16 @@ module NXT
     end
     
     def undo(block)
-      ActiveRecord::Base.transaction do
-        block.generator.balance_nqt     -= block.total_pos_nqt + block.total_fee_nqt
-        block.generator.pos_balance_nqt -= block.total_pos_nqt
-        block.generator.save
-        
-        Transaction.where(block: block).each do |t|
-          t.sender.balance_nqt    += t.amount_nqt + t.fee_nqt
-          t.recipient.balance_nqt -= t.amount_nqt
-          t.sender.save
-          t.recipient.save          
-        end        
-      end      
+      block.generator.balance_nqt     -= block.total_pos_nqt + block.total_fee_nqt
+      block.generator.pos_balance_nqt -= block.total_pos_nqt
+      block.generator.save
+      
+      Transaction.where(block: block).each do |t|
+        t.sender.balance_nqt    += t.amount_nqt + t.fee_nqt
+        t.recipient.balance_nqt -= t.amount_nqt
+        t.sender.save
+        t.recipient.save          
+      end        
     end
   end
 end

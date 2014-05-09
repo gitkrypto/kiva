@@ -27,6 +27,11 @@ module NXT
       get(:getBlocksIdsFromHeight, fromHeight: fromHeight, toHeight: toHeight)
     end
     
+    # { unconfirmedTransactionIds: ["id1", "id2"] }
+    def getUnconfirmedTransactionsIds
+      get(:getUnconfirmedTransactionIds)
+    end
+    
     # height, generator, timestamp, numberOfTransactions, totalAmountNQT, totalFeeNQT, payloadLength
     # version, baseTarget, previousBlock, nextBlock, payloadHash, generationSignature, previousBlockHash
     # blockSignature, transactions, totalPOSRewardNQT, cumulativeDifficulty

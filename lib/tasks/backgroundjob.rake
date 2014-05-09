@@ -15,6 +15,13 @@ namespace :backgroundjob do
     end
   end
   
+    # Polls the nxt node for new blocks
+  task :poll_transactions, [:interval] => [:environment]  do |t, args|
+    NXT::Runner.new(:poll_transactions).perform do
+      NXT::TransactionPoller.new.perform(args[:interval])
+    end
+  end
+  
   # Sends 1 random Transaction
   task :send_transaction, [:interval] => [:environment]  do |t, args|
     NXT::Runner.new(:send_transaction).perform do

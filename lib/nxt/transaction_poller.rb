@@ -6,7 +6,7 @@ module NXT
         if opts.has_key? 'unconfirmedTransactionIds'
           add_new_transactions opts['unconfirmedTransactionIds']
         end
-        puts "Going to sleep ... #{interval} seconds"
+        #puts "Going to sleep ... #{interval} seconds"
         sleep interval.to_i
       end
     end

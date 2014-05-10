@@ -3,7 +3,7 @@ module NXT
     def perform(interval)
       loop do
         send_next_transaction
-        puts "Going to sleep ... #{interval} seconds"
+        #puts "Going to sleep ... #{interval} seconds"
         sleep interval.to_i
       end
     end
@@ -28,7 +28,7 @@ module NXT
     end
     
     def sendmoney(sender, recipient, amountNQT, feeNQT=1*NXT::ONE_NXT)      
-      puts "Sendmoney sender=#{sender} #{sender.passphrase}"      
+      #puts "Sendmoney sender=#{sender} #{sender.passphrase}"      
       ActiveRecord::Base.transaction do
         t = PendingTransaction.create({
           :sender => sender, :recipient  => recipient, :amount_nqt => amountNQT, :fee_nqt => feeNQT 

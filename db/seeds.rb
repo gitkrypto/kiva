@@ -16,7 +16,7 @@ def add_stakeholder_accounts
     accounts.each_with_index do |native_id, index| 
       puts "Adding Stakeholder Account #{index} ..." if index % 100 == 0
       passphrase  = Fuzzer::Genesis.keys[index] 
-      Account.create!({:native_id => native_id, :passphrase => passphrase})
+      create({:native_id => native_id, :passphrase => passphrase})
     end
   end
 end
@@ -32,10 +32,15 @@ def add_csv_accounts
     ActiveRecord::Base.transaction do
       arr.each do |row|
         count += 1
-        Account.create!({:native_id => row[0], :passphrase => row[1]})
+        create({:native_id => row[0], :passphrase => row[1]})
       end
     end
   end
+end
+
+def create(params)
+  puts params.inspect
+  Account.create!(params)
 end
 
 add_stakeholder_accounts

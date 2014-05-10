@@ -44,7 +44,7 @@ def create_or_update_account(params)
     first.passphrase = params[:passphrase]
     first.save
   else
-    Account.create(params)
+    Account.create!(params)
   end    
 end
 

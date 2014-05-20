@@ -29,13 +29,16 @@ namespace :backgroundjob do
     puts "Generating Stakeholder Accounts"
     ActiveRecord::Base.transaction do
       accounts  = Fuzzer::Genesis.accounts
-      accounts  = accounts.slice(0..20) if Rails.env != 'production'
-      
+      accounts  = accounts.slice(0..20) if Rails.env != 'production'      
       accounts.each_with_index do |native_id, index| 
-        puts "Adding Stakeholder Account #{index} ..." if index % 100 == 0
-        Account.find_or_initialize_by(native_id: native_id) do |account|
-          account.passphrase = Fuzzer::Genesis.keys[index]
-          account.save
+        puts "Adding Stakeholder Account #{index} ... '#{native_id}' - '#{Fuzzer::Genesis.keys[index]}'" if index % 100 == 0
+        begin
+          acc   = Account.find_or_initialize_by(native_id: native_id) do |account|
+            account.passphrase = Fuzzer::Genesis.keys[index]
+          end
+          acc.save!
+        rescue ActiveRecord::RecordNotUnique
+          retry
         end
       end
     end
@@ -51,15 +54,19 @@ namespace :backgroundjob do
       puts "Adding Account #{count} ..." if count % 100 == 0
       ActiveRecord::Base.transaction do
         arr.each do |row|
-          count += 1
-          native_id = row[0]
+          count      += 1
+          native_id   = row[0]
           native_id.strip!
-          passphrase= row[1]
-          passphrase.strip!          
-          Account.find_or_initialize_by(native_id: native_id) do |account|
-            account.passphrase = passphrase
-            account.save
-          end          
+          passphrase  = row[1]
+          passphrase.strip!
+          begin          
+            acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
+              account.passphrase = passphrase
+            end
+            acc.save!    
+          rescue ActiveRecord::RecordNotUnique
+            retry
+          end
         end
       end
     end

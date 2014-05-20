@@ -5,17 +5,20 @@ namespace :backgroundjob do
   
   # Polls the nxt node for new blocks
   task :poll_blocks, [:interval] => [:environment]  do |t, args|
-    NXT::BlockPoller.new.perform(args[:interval])
+    interval = args[:interval] || 5
+    NXT::BlockPoller.new.perform(interval)
   end
   
     # Polls the nxt node for new blocks
   task :poll_transactions, [:interval] => [:environment]  do |t, args|
-    NXT::TransactionPoller.new.perform(args[:interval])
+    interval = args[:interval] || 2    
+    NXT::TransactionPoller.new.perform(interval)
   end
   
   # Sends 1 random Transaction
   task :send_transaction, [:interval] => [:environment]  do |t, args|
-    NXT::TransactionSender.new.perform(args[:interval])
+    interval = args[:interval] || 2
+    NXT::TransactionSender.new.perform(interval)
   end
     
   # Iterate all Accounts and update their passphrase field
@@ -29,7 +32,7 @@ namespace :backgroundjob do
     puts "Generating Stakeholder Accounts"
     ActiveRecord::Base.transaction do
       accounts  = Fuzzer::Genesis.accounts
-      accounts  = accounts.slice(0..20) if Rails.env != 'production'      
+      #accounts  = accounts.slice(0..20) if Rails.env != 'production'      
       accounts.each_with_index do |native_id, index| 
         puts "Adding Stakeholder Account #{index} ... '#{native_id}' - '#{Fuzzer::Genesis.keys[index]}'" if index % 100 == 0
         begin
@@ -49,7 +52,7 @@ namespace :backgroundjob do
     puts "Generating Accounts From accounts.csv"
     count    = 0
     accounts = CSV.read("#{Rails.root}/lib/nxt/accounts.csv")
-    accounts = accounts.slice(0..600) if Rails.env != 'production'  
+    #accounts = accounts.slice(0..600) if Rails.env != 'production'  
     accounts.each_slice(100) do |arr|
       puts "Adding Account #{count} ..." if count % 100 == 0
       ActiveRecord::Base.transaction do

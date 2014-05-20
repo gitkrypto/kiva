@@ -8,7 +8,7 @@ class CreateTables < ActiveRecord::Migration
       t.string      :public_key
       t.string      :passphrase
     end    
-    add_index :accounts, :native_id
+    add_index :accounts, :native_id, unique: true
     
     create_table :blocks do |t|
       t.string      :native_id
@@ -30,7 +30,7 @@ class CreateTables < ActiveRecord::Migration
     end    
     add_index :blocks, :generator
     add_index :blocks, :height
-    add_index :blocks, :native_id
+    add_index :blocks, :native_id, unique: true
 
     create_table :transactions do |t|
       t.string      :native_id
@@ -41,7 +41,7 @@ class CreateTables < ActiveRecord::Migration
       t.decimal     :amount_nqt,            :precision => 20, :scale => 0, :default => 0
       t.decimal     :fee_nqt,               :precision => 20, :scale => 0, :default => 0
     end
-    add_index :transactions, :native_id
+    add_index :transactions, :native_id, unique: true
     add_index :transactions, :block
     add_index :transactions, :sender
     add_index :transactions, :recipient
@@ -58,7 +58,7 @@ class CreateTables < ActiveRecord::Migration
     end
     add_index :pending_transactions, :sender
     add_index :pending_transactions, :recipient
-    add_index :pending_transactions, :native_id
+    add_index :pending_transactions, :native_id, unique: true
     
     create_table :unconfirmed_transactions do |t|
       t.integer     :sender                 # foreign key to accounts
@@ -70,7 +70,7 @@ class CreateTables < ActiveRecord::Migration
     end
     add_index :unconfirmed_transactions, :sender
     add_index :unconfirmed_transactions, :recipient
-    add_index :unconfirmed_transactions, :native_id   
+    add_index :unconfirmed_transactions, :native_id, unique: true   
     
   end
 end

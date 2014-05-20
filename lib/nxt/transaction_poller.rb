@@ -1,14 +1,23 @@
 module NXT
   class TransactionPoller    
     def perform(interval)
-      loop do
-        opts = NXT::api.getUnconfirmedTransactionsIds
-        if opts.has_key? 'unconfirmedTransactionIds'
-          add_new_transactions opts['unconfirmedTransactionIds']
+      begin
+        loop do
+          opts = NXT::api.getUnconfirmedTransactionsIds
+          if opts.has_key? 'unconfirmedTransactionIds'
+            add_new_transactions opts['unconfirmedTransactionIds']
+          end
+          #puts "Going to sleep ... #{interval} seconds"
+          sleep interval.to_i
         end
-        #puts "Going to sleep ... #{interval} seconds"
-        sleep interval.to_i
+      rescue => e
+        log("Error: #{$!}\nBacktrace:\n\t#{e.backtrace.join("\n\t")}")
+        throw e
       end
+    end
+
+    def log(msg)
+      NXT.log('txn poller', msg)
     end
 
     # Add unconfirmed transactions 

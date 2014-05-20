@@ -1,6 +1,7 @@
 require 'rest_client'
 require 'json'
 require 'csv'
+require 'cgi'
 
 module NXT
   ONE_NXT = 100000000
@@ -16,6 +17,12 @@ module NXT
       end
       API.new(host, 7886)
     end
+  end
+  
+  # "http://95.85.30.207:7886/nxt?secretPhrase=mania+lessee+leapt+31+cy+coat+nimh+puppy+ys+butt+defy+bandit&recipient=11047499023811727519&amountNQT=49776892677179&feeNQT=100000000&deadline=1440&referencedTransaction=&requestType=sendMoney"
+  
+  def self.log(sender, msg)
+    puts "#{Time.now} [#{sender}] #{msg}"
   end
 end
 

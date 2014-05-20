@@ -1,17 +1,26 @@
 module NXT  
   class TransactionSender        
     def perform(interval)
-      loop do
-        send_next_transaction
-        #puts "Going to sleep ... #{interval} seconds"
-        sleep interval.to_i
+      begin
+        loop do
+          send_next_transaction
+          #puts "Going to sleep ... #{interval} seconds"
+          sleep interval.to_i
+        end
+      rescue => e
+        log("Error: #{$!}\nBacktrace:\n\t#{e.backtrace.join("\n\t")}")
+        throw e
       end
+    end
+    
+    def log(msg)
+      NXT.log('txn sender', msg)
     end
     
     def send_next_transaction
       sender    = random_account(true)
       unless sender
-        puts "Could not obtain a random account for Transaction Sender"
+        log "Could not obtain a random account for Transaction Sender"
         return
       end      
       recipient = random_account
@@ -35,12 +44,13 @@ module NXT
         })
         obj = NXT::api.sendMoney(sender.passphrase, recipient.native_id, amountNQT, feeNQT, 1440, "")
         if obj.has_key? 'transaction'
-          puts "Transaction Send #{t.amount_nqt} From #{t.sender.native_id} To #{t.recipient.native_id}"
+          log "Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id}"
           t.native_id  = obj['transaction']          
         else
           t.error_code = obj['errorCode'] if obj.has_key? 'errorCode'
           t.error_msg  = obj['errorDescription'] if obj.has_key? 'errorDescription'
           t.error_msg  = obj['errorMessage'] if obj.has_key? 'errorMessage'
+          log "Failed to Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id} | #{t.error_msg}"
         end   
         t.save
       end

@@ -1,15 +1,24 @@
 module NXT
   class BlockPoller    
     def perform(interval)
-      loop do
-        opts = get_new_blocks
-        if opts[:blockIds]
-          remove_orphaned_blocks opts
-          add_new_blocks opts
+      begin
+        loop do
+          opts = get_new_blocks
+          if opts[:blockIds]
+            remove_orphaned_blocks opts
+            add_new_blocks opts
+          end
+          #puts "Going to sleep ... #{interval} seconds"
+          sleep interval.to_i
         end
-        #puts "Going to sleep ... #{interval} seconds"
-        sleep interval.to_i
+      rescue => e
+        log("Error: #{$!}\nBacktrace:\n\t#{e.backtrace.join("\n\t")}")
+        throw e
       end
+    end
+    
+    def log(msg)
+      NXT.log('block poller', msg)
     end
 
     # { blockIds: [], fromHeight: 1 }

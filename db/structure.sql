@@ -30,7 +30,7 @@ CREATE TABLE `accounts` (
   `public_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `passphrase` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_accounts_on_native_id` (`native_id`)
+  UNIQUE KEY `index_accounts_on_native_id` (`native_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,9 +60,9 @@ CREATE TABLE `blocks` (
   `previous_block` int(10) DEFAULT NULL,
   `next_block` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `index_blocks_on_native_id` (`native_id`),
   KEY `index_blocks_on_generator` (`generator`),
-  KEY `index_blocks_on_height` (`height`),
-  KEY `index_blocks_on_native_id` (`native_id`)
+  KEY `index_blocks_on_height` (`height`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -85,9 +85,9 @@ CREATE TABLE `pending_transactions` (
   `error_msg` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `error_code` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `index_pending_transactions_on_native_id` (`native_id`),
   KEY `index_pending_transactions_on_sender` (`sender`),
-  KEY `index_pending_transactions_on_recipient` (`recipient`),
-  KEY `index_pending_transactions_on_native_id` (`native_id`)
+  KEY `index_pending_transactions_on_recipient` (`recipient`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -121,7 +121,7 @@ CREATE TABLE `transactions` (
   `amount_nqt` decimal(20,0) DEFAULT '0',
   `fee_nqt` decimal(20,0) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `index_transactions_on_native_id` (`native_id`),
+  UNIQUE KEY `index_transactions_on_native_id` (`native_id`),
   KEY `index_transactions_on_block` (`block`),
   KEY `index_transactions_on_sender` (`sender`),
   KEY `index_transactions_on_recipient` (`recipient`)
@@ -144,9 +144,9 @@ CREATE TABLE `unconfirmed_transactions` (
   `native_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `timestamp` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `index_unconfirmed_transactions_on_native_id` (`native_id`),
   KEY `index_unconfirmed_transactions_on_sender` (`sender`),
-  KEY `index_unconfirmed_transactions_on_recipient` (`recipient`),
-  KEY `index_unconfirmed_transactions_on_native_id` (`native_id`)
+  KEY `index_unconfirmed_transactions_on_recipient` (`recipient`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -159,6 +159,6 @@ CREATE TABLE `unconfirmed_transactions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-09 12:48:32
+-- Dump completed on 2014-05-20 14:42:11
 INSERT INTO schema_migrations (version) VALUES ('20140503235909');
 

@@ -11,14 +11,12 @@ module NXT
     end
   
     def get(requestType, params={}) 
-      puts "Params #{params.inspect}"
-      
+      #puts "INPUT => #{JSON.pretty_generate(params)}"
       params['requestType'] = requestType
+      #RestClient.log = $stdout
       json = RestClient.get @url, {:params => params, :timeout => 10, :open_timeout => 10}
       obj = JSON.parse json
-      #puts json
-      #logger.info json      
-      #logger.flush
+      #puts "OUTPUT <= #{JSON.pretty_generate(obj)}"
       obj
     end
     

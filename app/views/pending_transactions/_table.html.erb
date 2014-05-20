@@ -1,0 +1,29 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>ID</th>
+      <th>Sender</th>
+      <th>Recipient</th>
+      <th>Amount</th>
+      <th>Fee</th>
+      <th>Error</th>
+      <th>Code</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pending_transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.created_at %></td>
+        <td><%= link_to (transaction.native_id||'--'), transaction %></td>
+        <td><%= link_to transaction.sender.native_id, transaction.sender %></td>
+        <td><%= link_to transaction.recipient.native_id, transaction.recipient %></td>
+        <td><%= convert_to_nxt transaction.amount_nqt %></td>
+        <td><%= convert_to_nxt transaction.fee_nqt %></td>
+        <td><%= transaction.error_msg %></td>
+        <td><%= transaction.error_code %></td>        
+      </tr>
+    <% end %>
+  </tbody>
+</table>

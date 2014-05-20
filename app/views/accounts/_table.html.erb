@@ -4,6 +4,7 @@
       <th>ID</th>
       <th>POS Rewards</th>
       <th>Balance</th>
+      <th>Passphrase</th>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +13,7 @@
         <td><%= link_to account.native_id, account %></td>
         <td class="align-right" data-balance="<%= account.pos_balance_nqt %>"><%= convert_to_nxt account.pos_balance_nqt %></td>
         <td class="align-right" data-balance="<%= account.balance_nqt %>"><%= convert_to_nxt account.balance_nqt %></td>
+        <td><%= show_passphrase(account.passphrase)  %></td>
       </tr>
     <% end %>
   </tbody>

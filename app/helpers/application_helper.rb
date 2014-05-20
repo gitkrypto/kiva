@@ -36,4 +36,13 @@ module ApplicationHelper
     "#{negative}#{amount}#{afterComma}"
   end
   #convert_to_nxt 1
+  
+  def show_passphrase(string)
+    if string.nil?
+      "nil"
+    else
+      string[0, 5] + "..." + string[-5,5]
+    end
+  end
+  
 end

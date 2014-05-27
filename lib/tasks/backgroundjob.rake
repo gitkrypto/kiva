@@ -30,21 +30,28 @@ namespace :backgroundjob do
   # Generate all Stakeholder accounts
   def add_stakeholder_accounts
     puts "Generating Stakeholder Accounts"
-    ActiveRecord::Base.transaction do
-      accounts  = Fuzzer::Genesis.accounts
-      #accounts  = accounts.slice(0..20) if Rails.env != 'production'      
-      accounts.each_with_index do |native_id, index| 
-        puts "Adding Stakeholder Account #{index} ... '#{native_id}' - '#{Fuzzer::Genesis.keys[index]}'" if index % 100 == 0
-        begin
-          acc   = Account.find_or_initialize_by(native_id: native_id) do |account|
-            account.passphrase = Fuzzer::Genesis.keys[index]
+    count    = 0
+    accounts = CSV.read("#{Rails.root}/lib/nxt/test_net_keys.csv")
+    accounts.each_slice(100) do |arr|
+      ActiveRecord::Base.transaction do
+        arr.each do |row|
+          count      += 1
+          native_id   = row[1]
+          native_id.strip!
+          passphrase  = row[3]
+          passphrase.strip!
+          puts "Adding Stakeholder Account #{count} #{native_id} ..." if count % 100 == 0
+          begin          
+            acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
+              account.passphrase = passphrase
+            end
+            acc.save!    
+          rescue ActiveRecord::RecordNotUnique
+            retry
           end
-          acc.save!
-        rescue ActiveRecord::RecordNotUnique
-          retry
         end
       end
-    end
+    end    
   end
   
   # Generate all accounts in the accounts.csv monster list
@@ -52,9 +59,8 @@ namespace :backgroundjob do
     puts "Generating Accounts From accounts.csv"
     count    = 0
     accounts = CSV.read("#{Rails.root}/lib/nxt/accounts.csv")
-    #accounts = accounts.slice(0..600) if Rails.env != 'production'  
+    accounts = accounts.slice(0..600) if Rails.env != 'production'  
     accounts.each_slice(100) do |arr|
-      puts "Adding Account #{count} ..." if count % 100 == 0
       ActiveRecord::Base.transaction do
         arr.each do |row|
           count      += 1
@@ -62,6 +68,7 @@ namespace :backgroundjob do
           native_id.strip!
           passphrase  = row[1]
           passphrase.strip!
+          puts "Adding Account #{count} #{native_id} ..." if count % 100 == 0
           begin          
             acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
               account.passphrase = passphrase

@@ -15,7 +15,7 @@ module NXT
       else
         '95.85.30.207'
       end
-      API.new(host, 7886)
+      API.new(host, 6886)
     end
   end
   
@@ -30,4 +30,3 @@ require 'nxt/api'
 require 'nxt/block_poller'
 require 'nxt/transaction_sender'
 require 'nxt/runner'
-require 'nxt/genesis'

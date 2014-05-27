@@ -32,9 +32,9 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
-    bootstrap-sass (2.3.2.0)
+    bootstrap-sass (3.1.1.1)
       sass (~> 3.2)
-    bootstrap-will_paginate (0.0.9)
+    bootstrap-will_paginate (0.0.10)
       will_paginate
     builder (3.2.2)
     capistrano (3.1.0)
@@ -178,7 +178,7 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     websocket (1.0.7)
-    will_paginate (3.0.4)
+    will_paginate (3.0.5)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -187,8 +187,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-mysql-unsigned
-  bootstrap-sass (= 2.3.2.0)
-  bootstrap-will_paginate (= 0.0.9)
+  bootstrap-sass (= 3.1.1.1)
+  bootstrap-will_paginate (= 0.0.10)
   capistrano (~> 3.1.0)
   capistrano-rails (~> 1.1)
   capybara (= 2.1.0)
@@ -212,4 +212,4 @@ DEPENDENCIES
   sqlite3 (= 1.3.8)
   turbolinks
   uglifier (>= 1.3.0)
-  will_paginate (= 3.0.4)
+  will_paginate (= 3.0.5)

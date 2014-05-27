@@ -1,9 +1,14 @@
-<header class="navbar navbar-top navbar-default">
+<header class="navbar navbar-top navbar-inverse navbar-default">
   <div class="navbar-inner">
-    <div class="container">
-      <%= link_to "FIMKRYPTO", '/', id: "logo", class: 'nav'  %>
-      <nav>
-        <ul class="nav">
+    <div class="container">      
+      <div class="navbar-header">
+        <div>
+          <img align="right" src="<%= image_path('finland_round_64.png') %>">
+          <%= link_to "FIMKRYPTO", '/', id: "logo", class: 'navbar-brand'  %>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
           <li><%= link_to "Home",    '/' %></li>
           <li><%= link_to "Blocks",    '/blocks' %></li>
           <li><%= link_to "Transactions",    '/transactions' %></li>
@@ -11,11 +16,12 @@
           <li><%= link_to "Unconfirmed",    '/unconfirmed_transactions' %></li>          
           <li><%= link_to "Success/Fail",    '/pending_transactions' %></li>
         </ul>
-      </nav>
-      <form action="/search" method="GET" class="navbar-search pull-right hidden-phone">
-        <input type="text" placeholder="Search" name="search" class="search-query">
-      </form>      
+        <form action="/search" method="GET" class="navbar-form navbar-right" role="form">
+          <div class="form-group">
+            <input type="text" placeholder="Search" name="search" class="search-query">
+          </div>
+       </form>        
+      </div>
     </div>
   </div>
 </header>
-

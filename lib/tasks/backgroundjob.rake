@@ -59,7 +59,7 @@ namespace :backgroundjob do
     puts "Generating Accounts From accounts.csv"
     count    = 0
     accounts = CSV.read("#{Rails.root}/lib/nxt/accounts.csv")
-    accounts = accounts.slice(0..600) if Rails.env != 'production'  
+    #accounts = accounts.slice(0..600) if Rails.env != 'production'  
     accounts.each_slice(100) do |arr|
       ActiveRecord::Base.transaction do
         arr.each do |row|

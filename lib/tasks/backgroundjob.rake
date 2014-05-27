@@ -4,20 +4,23 @@ require 'nxt'
 namespace :backgroundjob do
   
   # Polls the nxt node for new blocks
-  task :poll_blocks, [:interval] => [:environment]  do |t, args|
+  task :poll_blocks, [:interval,:verbose] => [:environment]  do |t, args|
     interval = args[:interval] || 5
+    NXT.verbose = args[:verbose] || false
     NXT::BlockPoller.new.perform(interval)
   end
   
     # Polls the nxt node for new blocks
-  task :poll_transactions, [:interval] => [:environment]  do |t, args|
-    interval = args[:interval] || 2    
+  task :poll_transactions, [:interval,:verbose] => [:environment]  do |t, args|
+    interval = args[:interval] || 2   
+    NXT.verbose = args[:verbose] || false
     NXT::TransactionPoller.new.perform(interval)
   end
   
   # Sends 1 random Transaction
-  task :send_transaction, [:interval] => [:environment]  do |t, args|
+  task :send_transaction, [:interval,:verbose] => [:environment]  do |t, args|
     interval = args[:interval] || 2
+    NXT.verbose = args[:verbose] || false
     NXT::TransactionSender.new.perform(interval)
   end
     
@@ -40,7 +43,7 @@ namespace :backgroundjob do
           native_id.strip!
           passphrase  = row[3]
           passphrase.strip!
-          puts "Adding Stakeholder Account #{count} #{native_id} ..." if count % 100 == 0
+          puts "Adding Stakeholder Account #{count} #{native_id} ... #{passphrase}" if count % 100 == 0
           begin          
             acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
               account.passphrase = passphrase
@@ -68,7 +71,7 @@ namespace :backgroundjob do
           native_id.strip!
           passphrase  = row[1]
           passphrase.strip!
-          puts "Adding Account #{count} #{native_id} ..." if count % 100 == 0
+          puts "Adding Account #{count} #{native_id} ...  #{passphrase}" if count % 100 == 0
           begin          
             acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
               account.passphrase = passphrase

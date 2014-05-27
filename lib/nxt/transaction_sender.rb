@@ -4,7 +4,7 @@ module NXT
       begin
         loop do
           send_next_transaction
-          #puts "Going to sleep ... #{interval} seconds"
+          puts "Going to sleep ... #{interval} seconds" if NXT.verbose
           sleep interval.to_i
         end
       rescue => e
@@ -44,14 +44,14 @@ module NXT
         })
         obj = NXT::api.sendMoney(sender.passphrase, recipient.native_id, amountNQT, feeNQT, 1440, "")
         if obj.has_key? 'transaction' and not obj.has_key? 'error'
-          log "Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id}"
+          log "Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id}" if NXT.verbose
           t.native_id  = obj['transaction']          
         else
           t.error_code = obj['errorCode'] if obj.has_key? 'errorCode'
           t.error_msg  = obj['errorDescription'] if obj.has_key? 'errorDescription'
           t.error_msg  = obj['errorMessage'] if obj.has_key? 'errorMessage'
           t.error_msg  = obj['error'] if obj.has_key? 'error'
-          log "Failed to Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id} | #{t.error_msg}"
+          log "Failed to Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id} | #{t.error_msg}" if NXT.verbose
         end   
         t.save
       end

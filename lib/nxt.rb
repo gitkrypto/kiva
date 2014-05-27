@@ -6,6 +6,14 @@ require 'cgi'
 module NXT
   ONE_NXT = 100000000
   DEBUG   = true
+
+  def self.verbose=(val)
+    @@verbose = val
+  end  
+  
+  def self.verbose
+    @@verbose
+  end
   
   def self.api
     @@api ||= begin

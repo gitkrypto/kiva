@@ -1,5 +1,7 @@
 module NXT
   class API
+    
+    @verbose = false
   
     def initialize(host, port)
       @url  = "http://#{host}:#{port}/nxt"
@@ -9,14 +11,18 @@ module NXT
     def logger
       Rails.logger
     end
+    
+    def verbose=(val)
+      @verbose = val
+    end
   
     def get(requestType, params={}) 
-      #puts "INPUT => #{JSON.pretty_generate(params)}"
+      puts "INPUT => #{JSON.pretty_generate(params)}" if NXT.verbose
       params['requestType'] = requestType
-      #RestClient.log = $stdout
+      RestClient.log = $stdout  if NXT.verbose
       json = RestClient.get @url, {:params => params, :timeout => 10, :open_timeout => 10}
       obj = JSON.parse json
-      #puts "OUTPUT <= #{JSON.pretty_generate(obj)}"
+      puts "OUTPUT => #{JSON.pretty_generate(obj)}"  if NXT.verbose
       obj
     end
     

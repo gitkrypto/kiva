@@ -2,8 +2,8 @@
 <h1>
   <small>Block #<%= @block.height %></small>
 </h1>
-<div class="row-fluid">
-  <div class="span6">
+<div class="row">
+  <div class="col-md-6">
     <table class="table table-striped">
       <tbody>
         <tr>
@@ -73,7 +73,11 @@
     </table>
   </div>
 
-  <div class="span6">
+  <div class="col-md-6">
+    <div class="well">
+      <h3>Block Reward <button class="btn btn-success cb"><%= convert_to_nxt(@block.total_pos_nqt + @block.total_fee_nqt)%></button> FIM</h3>
+    </div>
+    
     <table class="table table-striped">
       <tbody>
         <tr>
@@ -81,21 +85,21 @@
         </tr>
         <tr>
           <td>Payload</td>
-          <td><%= @block.payload_hash %></td>
+          <td><%= truncate(@block.payload_hash) %></td>
         </tr>
         <tr>
           <td>Block Signature</td>
-          <td><%= @block.block_signature %></td>
+          <td><%= truncate(@block.block_signature) %></td>
         </tr>
         <tr>
           <td>Generation Signature</td>
-          <td><%= @block.generation_signature %></td>
+          <td><%= truncate(@block.generation_signature) %></td>
         </tr>
         <tr>
           <td>Previous Block</td>
           <td>
             <% if @block.previous_block %>
-              <%= link_to @block.previous_block.block_signature, @block.previous_block %>
+              <%= link_to truncate(@block.previous_block.block_signature), @block.previous_block %>
             <% end %>
           </td>
         </tr>
@@ -103,7 +107,7 @@
           <td>Next Block</td>
           <td>
             <% if @block.next_block %>
-              <%= link_to @block.next_block.block_signature, @block.next_block %>
+              <%= link_to truncate(@block.next_block.block_signature), @block.next_block %>
             <% end %>
           </td>
         </tr>
@@ -112,4 +116,37 @@
   </div>
 </div>
 
+<h1>
+  <small>Transactions</small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>ID</th>
+          <th>Sender</th>
+          <th>Recipient</th>
+          <th>Amount</th>
+          <th>Fee</th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        <% @block.transactions.each do |transaction| %>
+          <tr>
+            <td><%= convert_timestamp transaction.timestamp %></td>
+            <td><%= link_to transaction.native_id, transaction %></td>
+            <!-- <td><%= link_to transaction.block.native_id, transaction.block %></td> -->
+            <td><%= link_to transaction.sender.native_id, transaction.sender %></td>
+            <td><%= link_to transaction.recipient.native_id, transaction.recipient %></td>
+            <td><%= convert_to_nxt transaction.amount_nqt %></td>
+            <td><%= convert_to_nxt transaction.fee_nqt %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 

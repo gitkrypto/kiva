@@ -1,6 +1,6 @@
 <header class="navbar navbar-top navbar-inverse navbar-default">
   <div class="navbar-inner">
-    <div class="container">      
+    <div class="container">
       <div class="navbar-header">
         <div>
           <img align="right" src="<%= image_path('finland_round_64.png') %>">
@@ -13,14 +13,17 @@
           <li><%= link_to "Blocks",    '/blocks' %></li>
           <li><%= link_to "Transactions",    '/transactions' %></li>
           <li><%= link_to "Accounts",    '/accounts' %></li>
-          <li><%= link_to "Unconfirmed",    '/unconfirmed_transactions' %></li>          
+          <li><%= link_to "Unconfirmed",    '/unconfirmed_transactions' %></li>
           <li><%= link_to "Success/Fail",    '/pending_transactions' %></li>
         </ul>
-        <form action="/search" method="GET" class="navbar-form navbar-right" role="form">
-          <div class="form-group">
-            <input type="text" placeholder="Search" name="search" class="search-query">
-          </div>
-       </form>        
+        <form action="/search" method="GET" class="navbar-form navbar-right navbar-search" role="form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="search">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Search</button>
+            </span>
+          </div><!-- /input-group -->
+       </form>
       </div>
     </div>
   </div>

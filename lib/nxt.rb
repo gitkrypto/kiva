@@ -17,7 +17,7 @@ module NXT
   
   def self.api
     @@api ||= begin
-      path = "/home/deploy/nxt.json"
+      path = "/home/deploy/fim.json"
       host = if File.exists? path
         JSON.parse(File.open(path, "rb").read)['nodes'].first
       else

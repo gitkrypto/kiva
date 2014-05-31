@@ -39,6 +39,7 @@
 </h1>
 <div class="row">
   <div class="col-md-12">
+    <%= will_paginate(@transactions) %>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -53,20 +54,21 @@
       <tbody>
         <% @transactions.each do |transaction| %>
           <tr>
-            <% if transaction.sender == @account.id %>
-              <td>OUT</td>
-            <% else %>
-              <td>IN</td>
-            <% end %>
-            <td><%= convert_timestamp transaction.timestamp %></td>
-            <td><%= link_to transaction.native_id, transaction %></td>
-            <% if transaction.sender == @account.id %>
+            <% if transaction.sender == @account %>
+              <td><img width="24px" src="<%= image_path('arrow_right.png') %>"></td>
+              <td><%= convert_timestamp transaction.timestamp %></td>
+              <td><%= link_to transaction.native_id, transaction %></td>
               <td><%= link_to transaction.recipient.native_id, transaction.recipient %></td>
+              <td><%= convert_to_nxt( - transaction.amount_nqt) %></td>
+              <td><%= convert_to_nxt(transaction.fee_nqt) %></td>
             <% else %>
+              <td><img width="24px" src="<%= image_path('arrow_left.png') %>"></td>
+              <td><%= convert_timestamp transaction.timestamp %></td>
+              <td><%= link_to transaction.native_id, transaction %></td>
               <td><%= link_to transaction.sender.native_id, transaction.sender %></td>
+              <td><%= convert_to_nxt transaction.amount_nqt %></td>
+              <td><%= convert_to_nxt transaction.fee_nqt %></td>
             <% end %>
-            <td><%= convert_to_nxt transaction.amount_nqt %></td>
-            <td><%= convert_to_nxt transaction.fee_nqt %></td>
           </tr>
         <% end %>
       </tbody>

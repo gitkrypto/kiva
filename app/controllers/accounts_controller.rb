@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
 
   def show
     @account = Account.find(params[:id])
-    @transactions = Transaction.where("sender = #{@account.id} OR recipient = #{@account.id}")
+    @transactions = Transaction.where("sender = #{@account.id} OR recipient = #{@account.id}").paginate(page: params[:page], :per_page => 10)
   end
 
   private

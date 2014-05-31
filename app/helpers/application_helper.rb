@@ -39,9 +39,9 @@ module ApplicationHelper
   
   def show_passphrase(string)
     if string.nil?
-      "nil"
+      "USER ACCOUNT"
     else
-      string[0, 5] + "..." + string[-5,5]
+      "TEST ACCOUNT" #string[0, 5] + "..." + string[-5,5]
     end
   end
   

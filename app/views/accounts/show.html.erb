@@ -1,4 +1,77 @@
 <% provide(:title, "Blockexplorer Account ##{@account.native_id}") %> 
-<h1 style="padding-bottom:10px">Account #<%= @account.native_id %></h1>
+<h1>
+  <small>Account #<%= @account.native_id %></small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th colspan="2">Summary</th>
+        </tr>
+        <tr>
+          <td>ID</td>
+          <td><%= @account.native_id %></td>
+        </tr>
+        <tr>
+          <td>Balance</td>
+          <td><strong><%= convert_to_nxt @account.balance_nqt %></strong></td>
+        </tr>
+        <tr>
+          <td><strong>POS rewards earned</strong></td>
+          <td><strong><%= convert_to_nxt @account.pos_balance_nqt %></td>
+        </tr>
+        <tr>
+          <td>Public key</td>
+          <td><%= @account.public_key %></td>
+        </tr>
+        <tr>
+          <td>Type</td>
+          <td><%= show_passphrase(@account.passphrase)  %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<h1>Under construction</h1>
+<h1>
+  <small>Transactions</small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Timestamp</th>
+          <th>ID</th>
+          <th>Account</th>
+          <th>Amount</th>
+          <th>Fee</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <% if transaction.sender == @account.id %>
+              <td>OUT</td>
+            <% else %>
+              <td>IN</td>
+            <% end %>
+            <td><%= convert_timestamp transaction.timestamp %></td>
+            <td><%= link_to transaction.native_id, transaction %></td>
+            <% if transaction.sender == @account.id %>
+              <td><%= link_to transaction.recipient.native_id, transaction.recipient %></td>
+            <% else %>
+              <td><%= link_to transaction.sender.native_id, transaction.sender %></td>
+            <% end %>
+            <td><%= convert_to_nxt transaction.amount_nqt %></td>
+            <td><%= convert_to_nxt transaction.fee_nqt %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

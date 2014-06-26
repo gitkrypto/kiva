@@ -21,7 +21,7 @@ module NXT
       host = if File.exists? path
         JSON.parse(File.open(path, "rb").read)['nodes'].first
       else
-        '107.170.145.83'
+        '104.131.241.189'
       end
       API.new(host, 6886)
     end

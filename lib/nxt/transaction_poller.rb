@@ -34,8 +34,8 @@ module NXT
       # Create a new db transaction
       transaction = UnconfirmedTransaction.create!({
         :native_id        => native_id,
-        :sender           => get_account(json['sender']),
-        :recipient        => get_account(json['recipient']),  
+        :sender           => get_account(json['sender'], json['senderRS']),
+        :recipient        => get_account(json['recipient'], json['recipientRS']),  
         :amount_nqt       => json['amountNQT'],
         :fee_nqt          => json['feeNQT'],
         :timestamp        => json['timestamp']  
@@ -46,8 +46,8 @@ module NXT
       Rails.logger
     end
 
-    def get_account(native_id)
-      Account.where(:native_id => native_id).first_or_create
+    def get_account(native_id, native_id_rs)
+      Account.where(:native_id => native_id, :native_id_rs => native_id_rs).first_or_create
     end
 
     def get_transaction(native_id)

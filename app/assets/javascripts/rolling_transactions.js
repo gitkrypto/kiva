@@ -5,8 +5,15 @@ $(function() {
   showLatestTransactions();
 
   function getNewData() {
+    
+    /* Only do this on the HOME page */
+   if (!$('#rolling-txn-container').length) {
+     setTimeout(getNewData, 2000);
+     return;
+   }
+    
     $.ajax({
-      url : "json/transactions",
+      url : "/json/transactions",
       type : "GET",
       dataType : "json",
       success : function(json) {

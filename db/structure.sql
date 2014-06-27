@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `native_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `native_id_rs` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `balance_nqt` decimal(20,0) DEFAULT '0',
   `pos_balance_nqt` decimal(20,0) DEFAULT '0',
   `public_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -159,6 +160,6 @@ CREATE TABLE `unconfirmed_transactions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-28 20:56:29
+-- Dump completed on 2014-06-27 12:34:51
 INSERT INTO schema_migrations (version) VALUES ('20140503235909');
 

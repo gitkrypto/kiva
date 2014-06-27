@@ -65,7 +65,7 @@ module NXT
       # Create a new db block
       block       = Block.create!({
         :native_id        => native_id,
-        :generator        => get_account(json['generator']),
+        :generator        => get_account(json['generator'], json['generatorRS']),
         :timestamp        => json['timestamp'],
         :height           => json['height'],
         :payload_length   => json['payloadLength'],
@@ -101,8 +101,8 @@ module NXT
           :native_id        => native_id,
           :timestamp        => json['timestamp'],
           :block            => block,
-          :sender           => get_account(json['sender']),
-          :recipient        => get_account(json['recipient']),
+          :sender           => get_account(json['sender'], json['senderRS']),
+          :recipient        => get_account(json['recipient'], json['recipientRS']),
           :amount_nqt       => json['amountNQT'],
           :fee_nqt          => json['feeNQT']
         })
@@ -118,8 +118,8 @@ module NXT
       Block.order('height DESC').first.height rescue 0
     end
 
-    def get_account(native_id)
-      Account.where(:native_id => native_id).first_or_create
+    def get_account(native_id, native_id_rs)
+      Account.where(:native_id => native_id, :native_id_rs => native_id_rs).first_or_create
     end
 
     def get_block(native_id)

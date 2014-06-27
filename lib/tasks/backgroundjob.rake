@@ -39,6 +39,8 @@ namespace :backgroundjob do
       ActiveRecord::Base.transaction do
         arr.each do |row|
           count      += 1
+          native_id_rs = row[0]
+          native_id_rs.strip!
           native_id   = row[1]
           native_id.strip!
           passphrase  = row[3]
@@ -47,6 +49,7 @@ namespace :backgroundjob do
           begin          
             acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
               account.passphrase = passphrase
+              account.native_id_rs = native_id_rs
             end
             acc.save!    
           rescue ActiveRecord::RecordNotUnique
@@ -67,14 +70,17 @@ namespace :backgroundjob do
       ActiveRecord::Base.transaction do
         arr.each do |row|
           count      += 1
-          native_id   = row[0]
+          native_id_rs = row[0]
+          native_id_rs.strip!          
+          native_id   = row[1]
           native_id.strip!
-          passphrase  = row[1]
+          passphrase  = row[2]
           passphrase.strip!
           puts "Adding Account #{count} #{native_id} ...  #{passphrase}" if count % 100 == 0
           begin          
             acc       = Account.find_or_initialize_by(native_id: native_id) do |account|
               account.passphrase = passphrase
+              account.native_id_rs = native_id_rs
             end
             acc.save!    
           rescue ActiveRecord::RecordNotUnique

@@ -3,6 +3,7 @@ class CreateTables < ActiveRecord::Migration
     
     create_table :accounts do |t|
       t.string      :native_id
+      t.string      :native_id_rs
       t.decimal     :balance_nqt,           :precision => 20, :scale => 0, :default => 0
       t.decimal     :pos_balance_nqt,       :precision => 20, :scale => 0, :default => 0
       t.string      :public_key

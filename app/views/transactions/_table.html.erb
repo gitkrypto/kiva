@@ -17,8 +17,8 @@
         <td><%= convert_timestamp transaction.timestamp %></td>
         <td><%= link_to transaction.native_id, transaction %></td>
         <!-- <td><%= link_to transaction.block.native_id, transaction.block %></td> -->
-        <td><%= link_to transaction.sender.native_id, transaction.sender %></td>
-        <td><%= link_to transaction.recipient.native_id, transaction.recipient %></td>
+        <td><%= link_to transaction.sender.native_id_rs, transaction.sender %></td>
+        <td><%= link_to transaction.recipient.native_id_rs, transaction.recipient %></td>
         <td><%= convert_to_nxt transaction.amount_nqt %></td>
         <td><%= convert_to_nxt transaction.fee_nqt %></td>
       </tr>

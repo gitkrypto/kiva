@@ -1,6 +1,6 @@
 <% provide(:title, "Blockexplorer Account ##{@account.native_id}") %> 
 <h1>
-  <small>Account #<%= @account.native_id %></small>
+  <small>Account #<%= @account.native_id_rs %></small>
 </h1>
 <div class="row">
   <div class="col-md-12">
@@ -11,8 +11,12 @@
         </tr>
         <tr>
           <td>ID</td>
-          <td><%= @account.native_id %></td>
+          <td><%= @account.native_id_rs %></td>
         </tr>
+        <tr>
+          <td>ID (numeric)</td>
+          <td><%= @account.native_id %></td>
+        </tr>        
         <tr>
           <td>Balance</td>
           <td><strong><%= convert_to_nxt @account.balance_nqt %></strong></td>
@@ -58,14 +62,14 @@
               <td><img width="24px" src="<%= image_path('arrow_right.png') %>"></td>
               <td><%= convert_timestamp transaction.timestamp %></td>
               <td><%= link_to transaction.native_id, transaction %></td>
-              <td><%= link_to transaction.recipient.native_id, transaction.recipient %></td>
+              <td><%= link_to transaction.recipient.native_id_rs, transaction.recipient %></td>
               <td><%= convert_to_nxt( - transaction.amount_nqt) %></td>
               <td><%= convert_to_nxt(transaction.fee_nqt) %></td>
             <% else %>
               <td><img width="24px" src="<%= image_path('arrow_left.png') %>"></td>
               <td><%= convert_timestamp transaction.timestamp %></td>
               <td><%= link_to transaction.native_id, transaction %></td>
-              <td><%= link_to transaction.sender.native_id, transaction.sender %></td>
+              <td><%= link_to transaction.sender.native_id_rs, transaction.sender %></td>
               <td><%= convert_to_nxt transaction.amount_nqt %></td>
               <td><%= convert_to_nxt transaction.fee_nqt %></td>
             <% end %>

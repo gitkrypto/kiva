@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>ID (numeric)</th>
       <th>POS Rewards</th>
       <th>Balance</th>
       <th>Type</th>
@@ -10,6 +11,7 @@
   <tbody>
     <% @accounts.each do |account| %>
       <tr>
+        <td><%= link_to account.native_id_rs, account %></td>
         <td><%= link_to account.native_id, account %></td>
         <td class="align-right" data-balance="<%= account.pos_balance_nqt %>"><%= convert_to_nxt account.pos_balance_nqt %></td>
         <td class="align-right" data-balance="<%= account.balance_nqt %>"><%= convert_to_nxt account.balance_nqt %></td>

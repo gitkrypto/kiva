@@ -36,7 +36,7 @@ module NXT
       end
     end
     
-    def sendmoney(sender, recipient, amountNQT, feeNQT=1*NXT::ONE_NXT)      
+    def sendmoney(sender, recipient, amountNQT, feeNQT=0.1*NXT::ONE_NXT)      
       #puts "Sendmoney sender=#{sender} #{sender.passphrase}"
       ActiveRecord::Base.transaction do
         t = PendingTransaction.create({
@@ -51,7 +51,7 @@ module NXT
           t.error_msg  = obj['errorDescription'] if obj.has_key? 'errorDescription'
           t.error_msg  = obj['errorMessage'] if obj.has_key? 'errorMessage'
           t.error_msg  = obj['error'] if obj.has_key? 'error'
-          log "Failed to Send #{t.amount_nqt} from:#{t.sender.native_id} to:#{t.recipient.native_id} | #{t.error_msg}" if NXT.verbose
+          log "Failed to Send #{t.amount_nqt} from:#{t.sender.native_id_rs} to:#{t.recipient.native_id_rs} | #{t.error_msg}" if NXT.verbose
         end   
         t.save
       end

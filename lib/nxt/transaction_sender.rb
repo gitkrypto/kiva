@@ -36,7 +36,7 @@ module NXT
       end
     end
     
-    def sendmoney(sender, recipient, amountNQT, feeNQT=0.1*NXT::ONE_NXT)      
+    def sendmoney(sender, recipient, amountNQT, feeNQT=MIN_FEE_NQT)      
       #puts "Sendmoney sender=#{sender} #{sender.passphrase}"
       ActiveRecord::Base.transaction do
         t = PendingTransaction.create({

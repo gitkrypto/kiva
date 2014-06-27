@@ -160,6 +160,6 @@ CREATE TABLE `unconfirmed_transactions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-06-27 12:34:51
+-- Dump completed on 2014-06-27 19:56:21
 INSERT INTO schema_migrations (version) VALUES ('20140503235909');
 

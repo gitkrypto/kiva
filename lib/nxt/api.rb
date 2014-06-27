@@ -50,7 +50,7 @@ module NXT
     end
     
     # "TRANSACTIONID" 
-    def sendMoney(secretPhrase, recipient, amountNQT, feeNQT=1*ONE_NXT, deadline=1440, referencedTransaction="")
+    def sendMoney(secretPhrase, recipient, amountNQT, feeNQT=MIN_FEE_NQT, deadline=1440, referencedTransaction="")
       get("sendMoney", :secretPhrase => secretPhrase, :recipient => recipient, :amountNQT => amountNQT,
         :feeNQT => feeNQT, :deadline => deadline, :referencedTransaction => referencedTransaction)
     end

@@ -5,6 +5,7 @@ require 'cgi'
 
 module NXT
   ONE_NXT = 100000000
+  MIN_FEE_NQT = 10000000
   DEBUG   = true
 
   def self.verbose=(val)

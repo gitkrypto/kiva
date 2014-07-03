@@ -23,7 +23,7 @@
         </tr>
         <tr>
           <td>Generator</td>
-          <td><%= link_to @block.generator.native_id_rs, @block.generator %> | <%= @block.generator.native_id %></td>
+          <td><%= link_to_account @block.generator %> | <%= @block.generator.native_id %></td>
         </tr>
         <tr>
           <td><strong>Block Reward</strong></td>
@@ -57,7 +57,7 @@
           <td>Previous Block</td>
           <td>
             <% if @block.previous_block %>
-              <%= link_to @block.previous_block.native_id, @block.previous_block %>
+              <%= link_to_block @block.previous_block %>
             <% end %>
           </td>
         </tr>    
@@ -65,7 +65,7 @@
           <td>Next Block</td>
           <td>
             <% if @block.next_block %>
-              <%= link_to @block.next_block.native_id, @block.next_block %>
+              <%= link_to_block @block.next_block %>
             <% end %>
           </td>
         </tr> 
@@ -139,8 +139,8 @@
             <td><%= convert_timestamp transaction.timestamp %></td>
             <td><%= link_to transaction.native_id, transaction %></td>
             <!-- <td><%= link_to transaction.block.native_id, transaction.block %></td> -->
-            <td><%= link_to transaction.sender.native_id_rs, transaction.sender %></td>
-            <td><%= link_to transaction.recipient.native_id_rs, transaction.recipient %></td>
+            <td><%= link_to_account transaction.sender %></td>
+            <td><%= link_to_account transaction.recipient %></td>
             <td><%= convert_to_nxt transaction.amount_nqt %></td>
             <td><%= convert_to_nxt transaction.fee_nqt %></td>
           </tr>

@@ -61,15 +61,15 @@
             <% if transaction.sender == @account %>
               <td><img width="24px" src="<%= image_path('arrow_right.png') %>"></td>
               <td><%= convert_timestamp transaction.timestamp %></td>
-              <td><%= link_to transaction.native_id, transaction %></td>
-              <td><%= link_to transaction.recipient.native_id_rs, transaction.recipient %></td>
+              <td><%= link_to_transaction transaction %></td>
+              <td><%= link_to_account transaction.recipient %></td>
               <td><%= convert_to_nxt( - transaction.amount_nqt) %></td>
               <td><%= convert_to_nxt(transaction.fee_nqt) %></td>
             <% else %>
               <td><img width="24px" src="<%= image_path('arrow_left.png') %>"></td>
               <td><%= convert_timestamp transaction.timestamp %></td>
-              <td><%= link_to transaction.native_id, transaction %></td>
-              <td><%= link_to transaction.sender.native_id_rs, transaction.sender %></td>
+              <td><%= link_to_transaction transaction %></td>
+              <td><%= link_to_account transaction.sender %></td>
               <td><%= convert_to_nxt transaction.amount_nqt %></td>
               <td><%= convert_to_nxt transaction.fee_nqt %></td>
             <% end %>

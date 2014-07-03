@@ -1,12 +1,13 @@
 class TransactionsController < ApplicationController
   include ApplicationHelper
-  before_action :set_transaction, only: [:show]
 
   def index
     @transactions = Transaction.order('block DESC').paginate(page: params[:page], :per_page => 20)
   end
 
   def show
+    @transaction = Transaction.find(params[:id]) rescue nil   
+    @transaction = Transaction.where(:native_id => params[:id]).first unless @transaction
   end
   
   def latest
@@ -26,10 +27,6 @@ class TransactionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_transaction
-      @transaction = Transaction.find(params[:id])
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transaction_params

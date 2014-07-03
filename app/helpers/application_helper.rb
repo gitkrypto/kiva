@@ -33,7 +33,7 @@ module ApplicationHelper
       end
       afterComma += fractionalPart.sub(/0+$/,'')
     end  
-    "#{negative}#{amount}#{afterComma}"
+    "#{negative}#{number_with_delimiter(amount)}#{afterComma}"
   end
   #convert_to_nxt 1
   
@@ -45,4 +45,26 @@ module ApplicationHelper
     end
   end
   
+  # app/helpers/application_helper.rb
+  def link_to_account(account)
+    id        = account.native_id_rs
+    url       = "/accounts/#{id}"
+    href_attr = "href=\"#{html_escape(url)}\""
+    "<a #{href_attr}>#{html_escape(id)}</a>".html_safe    
+  end
+
+  def link_to_transaction(transaction)
+    id        = transaction.native_id
+    url       = "/transactions/#{id}"
+    href_attr = "href=\"#{html_escape(url)}\""
+    "<a #{href_attr}>#{html_escape(id)}</a>".html_safe        
+  end
+  
+  def link_to_block(block)
+    id        = block.native_id
+    url       = "/blocks/#{id}"
+    href_attr = "href=\"#{html_escape(url)}\""
+    "<a #{href_attr}>#{html_escape(id)}</a>".html_safe       
+  end
+    
 end

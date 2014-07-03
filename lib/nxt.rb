@@ -19,12 +19,17 @@ module NXT
   def self.api
     @@api ||= begin
       path = "/home/deploy/fim.json"
-      host = if File.exists? path
-        JSON.parse(File.open(path, "rb").read)['nodes'].first
-      else
-        '104.131.241.189'
-      end
-      API.new(host, 6886)
+      hosts =  [
+        # vpx-1 512MB   20GB  ams2 - has accessible API
+        '5.101.102.194',
+        # vpx-2 512MB   20GB  ams2
+        '5.101.102.195',
+        # vpx-3 512MB   20GB  ams2
+        '5.101.102.196',
+        # vpx-3 512MB   20GB  ams2
+        '5.101.102.197',
+      ]
+      API.new(hosts, 7886)
     end
   end
   

@@ -8,7 +8,7 @@ $(function() {
     
     /* Only do this on the HOME page */
    if (!$('#rolling-txn-container').length) {
-     setTimeout(getNewData, 2000);
+     setTimeout(getNewData, 10000);
      return;
    }
     
@@ -25,7 +25,7 @@ $(function() {
         console.dir(xhr);
       },
       complete : function(xhr, status) {
-        setTimeout(getNewData, 2000);    
+        setTimeout(getNewData, 10000);    
       }
     });    
   }

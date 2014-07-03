@@ -3,8 +3,8 @@ module NXT
     
     @verbose = false
   
-    def initialize(host, port)
-      @url  = "http://#{host}:#{port}/nxt"
+    def initialize(hosts, port)
+      @hosts = hosts.map { |u| "http://#{u}:#{port}/nxt" }
     end
     
     # This is required since this class is run from an initializer
@@ -20,7 +20,7 @@ module NXT
       puts "INPUT => #{JSON.pretty_generate(params)}" if NXT.verbose
       params['requestType'] = requestType
       RestClient.log = $stdout  if NXT.verbose
-      json = RestClient.get @url, {:params => params, :timeout => 10, :open_timeout => 10}
+      json = RestClient.get @hosts.sample, {:params => params, :timeout => 10, :open_timeout => 10}
       obj = JSON.parse json
       puts "OUTPUT => #{JSON.pretty_generate(obj)}"  if NXT.verbose
       obj

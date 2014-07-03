@@ -3,7 +3,7 @@ lock '3.1.0'
 
 set :application, 'kiva'
 set :repo_url, 'https://github.com/gitkrypto/kiva.git'
-set :branch, "master"
+set :branch, "livenet"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -51,3 +51,12 @@ namespace :logs do
     end
   end
 end
+
+# Horrible monkey patch
+# http://makandracards.com/makandra/512-how-to-fix-too-many-authentic-authentication-failures-with-ssh-and-or-capistrano
+
+#class Net::SSH::Authentication::KeyManager
+#  def use_agent?
+#    false
+#  end
+#end

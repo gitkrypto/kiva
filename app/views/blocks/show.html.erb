@@ -99,7 +99,7 @@
           <td>Previous Block</td>
           <td>
             <% if @block.previous_block %>
-              <%= link_to truncate(@block.previous_block.block_signature), @block.previous_block %>
+              <%= link_to_block @block.previous_block, truncate(@block.previous_block.block_signature) %>
             <% end %>
           </td>
         </tr>
@@ -107,7 +107,7 @@
           <td>Next Block</td>
           <td>
             <% if @block.next_block %>
-              <%= link_to truncate(@block.next_block.block_signature), @block.next_block %>
+              <%= link_to_block @block.next_block, truncate(@block.next_block.block_signature) %>
             <% end %>
           </td>
         </tr>
@@ -137,7 +137,7 @@
         <% @block.transactions.each do |transaction| %>
           <tr>
             <td><%= convert_timestamp transaction.timestamp %></td>
-            <td><%= link_to transaction.native_id, transaction %></td>
+            <td><%= link_to_transaction transaction %></td>
             <!-- <td><%= link_to transaction.block.native_id, transaction.block %></td> -->
             <td><%= link_to_account transaction.sender %></td>
             <td><%= link_to_account transaction.recipient %></td>

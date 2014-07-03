@@ -46,25 +46,25 @@ module ApplicationHelper
   end
   
   # app/helpers/application_helper.rb
-  def link_to_account(account)
+  def link_to_account(account, name=nil)
     id        = account.native_id_rs
     url       = "/accounts/#{id}"
     href_attr = "href=\"#{html_escape(url)}\""
-    "<a #{href_attr}>#{html_escape(id)}</a>".html_safe    
+    "<a #{href_attr}>#{html_escape(name || id)}</a>".html_safe    
   end
 
-  def link_to_transaction(transaction)
+  def link_to_transaction(transaction, name=nil)
     id        = transaction.native_id
     url       = "/transactions/#{id}"
     href_attr = "href=\"#{html_escape(url)}\""
-    "<a #{href_attr}>#{html_escape(id)}</a>".html_safe        
+    "<a #{href_attr}>#{html_escape(name || id)}</a>".html_safe        
   end
   
-  def link_to_block(block)
+  def link_to_block(block, name=nil)
     id        = block.native_id
     url       = "/blocks/#{id}"
     href_attr = "href=\"#{html_escape(url)}\""
-    "<a #{href_attr}>#{html_escape(id)}</a>".html_safe       
+    "<a #{href_attr}>#{html_escape(name || id)}</a>".html_safe       
   end
     
 end

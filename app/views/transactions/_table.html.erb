@@ -15,7 +15,7 @@
     <% @transactions.each do |transaction| %>
       <tr>
         <td><%= convert_timestamp transaction.timestamp %></td>
-        <td><%= link_to transaction.native_id, transaction %></td>
+        <td><%= link_to_transaction transaction %></td>
         <!-- <td><%= link_to transaction.block.native_id, transaction.block %></td> -->
         <td><%= link_to_account transaction.sender %></td>
         <td><%= link_to_account transaction.recipient %></td>

@@ -16,11 +16,11 @@
         </tr>
         <tr>
           <td>Sender</td>
-          <td><%= link_to @transaction.sender.native_id_rs, @transaction.sender %> | <%= @transaction.sender.native_id %></td>
+          <td><%= link_to_account @transaction.sender %> | <%= link_to_account @transaction.sender, @transaction.sender.native_id %></td>
         </tr>
         <tr>
           <td>Recipient</td>
-          <td><%= link_to @transaction.recipient.native_id_rs, @transaction.recipient %> | <%= @transaction.recipient.native_id %></td>
+          <td><%= link_to_account @transaction.recipient %> | <%= link_to_account @transaction.recipient, @transaction.recipient.native_id %></td>
         </tr>
         <tr>
           <td>Amount</td>
@@ -32,7 +32,7 @@
         </tr>
         <tr>
           <td>Block</td>
-          <td><%= link_to @transaction.block.native_id, @transaction.block %></td>
+          <td><%= link_to_block @transaction.block %></td>
         </tr>
         <tr>
           <td>Height</td>

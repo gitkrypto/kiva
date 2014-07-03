@@ -6,6 +6,7 @@ class BlocksController < ApplicationController
 
   def show
     @block = Block.find(params[:id]) rescue nil   
+    @block = Block.where(:height => params[:id]).first unless @block
     @block = Block.where(:native_id => params[:id]).first unless @block      
   end
 

@@ -180,9 +180,7 @@ module NXT
       Account.delete_all
       Alias.delete_all        
       Block.find_each do |block|
-        ActiveRecord::Base.transaction do
-          apply(block)
-        end
+        apply(block)
       end
       log("Rescan complete")
     end
@@ -212,33 +210,33 @@ module NXT
     end
     
     def apply(block)
-      unless block.generator 
+      generator = block.generator || begin 
         block.generator = get_account(block.generator_id, block.generator_id_rs, block.height)
+        block.save
       end
 
-      block.generator.balance_nqt     += block.total_pos_nqt + block.total_fee_nqt
-      block.generator.pos_balance_nqt += block.total_pos_nqt
-      block.generator.save
+      generator.balance_nqt     += block.total_pos_nqt + block.total_fee_nqt
+      generator.pos_balance_nqt += block.total_pos_nqt
+      generator.save
     
       Transaction.where(block: block).each do |t|
-        unless t.sender
-          t.sender = get_account(t.sender_id, t.sender_id_rs, block.height)
+        recipient = t.recipient || begin 
+          t.recipient = get_account(t.recipient_id, t.recipient_id_rs, block.height)
+          t.save
         end
 
-        unless t.recipient
-          t.recipient = get_account(t.recipient_id, t.recipient_id_rs, block.height)
+        sender    = t.sender || begin 
+          t.sender = get_account(t.sender_id, t.sender_id_rs, block.height)
+          t.save
         end
 
         # Always deduct the fee, this works for all transactions
-        t.sender.balance_nqt   -= t.fee_nqt
-        t.sender.save
+        sender.balance_nqt  -= t.amount_nqt + t.fee_nqt
+        sender.save
 
         if is_payment(t)
-          t.sender.balance_nqt -= t.amount_nqt
-          t.sender.save
-
-          t.recipient.balance_nqt += t.amount_nqt 
-          t.recipient.save
+          recipient.balance_nqt += t.amount_nqt 
+          recipient.save
         end
       end 
     end

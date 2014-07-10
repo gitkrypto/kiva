@@ -16,7 +16,7 @@ class BlocksController < ApplicationController
     total_coins = 666280000 + (current_height * 200)
     render :json => {
       total_coins: total_coins,
-      total_coins_in_circualtion: total_coins - 313000002,
+      total_coins_in_circulation: total_coins - 313000002,
       height: current_height,
       timestamp: Time.now.to_i
     }

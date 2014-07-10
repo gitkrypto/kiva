@@ -1,0 +1,74 @@
+<% provide(:title, "Blockexplorer Alias ##{@alias.alias}") %> 
+<h1>
+  <small>Alias #<%= @alias.alias %></small>
+</h1>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th colspan="2">Summary</th>
+        </tr>
+        <tr>
+          <td>Alias</td>
+          <td><%= link_to_alias @alias %></td>
+        </tr>
+        <tr>
+          <td>URI</td>
+          <td><%= @alias.uri %></td>
+        </tr>
+        <tr>
+          <td>Owner</td>
+          <td><%= link_to_account @alias.owner %> | <%= link_to_account @alias.owner, @alias.owner.native_id %></td>
+        </tr>        
+        <tr>
+          <td>Created</td>
+          <td><%= convert_timestamp @alias.txn.timestamp %></td>
+        </tr>
+        <tr>
+          <td>Fee</td>
+          <td><%= convert_to_nxt @alias.txn.fee_nqt %></td>
+        </tr>
+        <tr>
+          <td>Transaction</td>
+          <td><%= link_to_transaction @alias.txn %></td>
+        </tr>
+        <tr>
+          <td>Block</td>
+          <td><%= link_to_block @alias.txn %></td>
+        </tr>
+      </tbody>
+      
+    </table>
+  </div>
+</div>
+
+<h1>
+  <small>Other aliases owned by <%= link_to_account @alias.owner %> </small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <%= will_paginate(@aliases, :param_name => :a_page) %>
+    <table class="table table-striped" id="blocks">
+      <thead>
+        <tr>
+          <th><%= sortable "alias", "Alias" %></th>
+          <th><%= sortable "uri", "URI" %></th>
+          <th><%= sortable "owner", "Owner" %></th>
+          <th><%= sortable "txn", "Transaction" %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @aliases.each do |a| %>
+          <tr>
+            <td><%= link_to_alias a %></td>
+            <td><%= a.uri %></td>
+            <td><%= link_to_account a.owner %></td>
+            <td><%= link_to_transaction a.txn %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

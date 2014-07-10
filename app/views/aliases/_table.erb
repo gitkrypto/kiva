@@ -1,0 +1,20 @@
+<table class="table table-striped" id="blocks">
+  <thead>
+    <tr>
+      <th><%= sortable "alias", "Alias" %></th>
+      <th><%= sortable "uri", "URI" %></th>
+      <th><%= sortable "owner", "Owner" %></th>
+      <th><%= sortable "txn", "Transaction" %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @aliases.each do |a| %>
+      <tr>
+        <td><%= link_to_alias a %></td>
+        <td><%= a.uri %></td>
+        <td><%= link_to_account a.owner %></td>
+        <td><%= link_to_transaction a.txn %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

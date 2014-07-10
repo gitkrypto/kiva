@@ -229,12 +229,6 @@ module NXT
           t.recipient = get_account(t.recipient_id, t.recipient_id_rs, block.height)
         end
 
-        if t.sender == t.recipient
-          t.sender.balance_nqt -= t.fee_nqt
-          t.sender.save
-          next
-        end
-
         # Always deduct the fee, this works for all transactions
         t.sender.balance_nqt   -= t.fee_nqt
         t.sender.save

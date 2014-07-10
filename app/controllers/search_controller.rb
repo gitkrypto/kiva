@@ -30,8 +30,11 @@ class SearchController < ApplicationController
     # Is it a Transaction hash
     thing = nil #Transaction.where(:native_id => text).first
     redirect_to transaction_url(thing) and return if thing
-   
-    
+
+    # Is it an Alias
+    thing = Alias.where("lower(alias) = ?", text.downcase).first
+    redirect_to "/aliases/#{thing.alias}" and return if thing
+
 #    # Is it a Account public key
 #    thing = nil # Account.where(:native_id => text).first
 #    redirect_to account_url(thing) and return if thing

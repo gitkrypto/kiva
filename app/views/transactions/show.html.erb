@@ -4,7 +4,7 @@
 </h1>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-12">
     <table class="table table-striped">
       <tbody>
         <tr>
@@ -13,6 +13,10 @@
         <tr>
           <td>Time</td>
           <td><%= convert_timestamp @transaction.timestamp %></td>
+        </tr>
+        <tr>
+          <td>Type</td>
+          <td><%= transaction_type_to_s(@transaction) %></td>
         </tr>
         <tr>
           <td>Sender</td>

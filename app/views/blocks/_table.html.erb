@@ -1,12 +1,12 @@
 <table class="table table-striped" id="blocks">
   <thead>
     <tr>
-      <th>Height</th>
-      <th>Time</th>
-      <th>Generator</th>
-      <th>Amount</th>
-      <th>Fee</th>
-      <th>POS Reward</th>
+      <th><%= sortable "height", "Height" %></th>
+      <th><%= sortable "timestamp", "Time" %></th>
+      <th><%= sortable "generator", "Generator" %></th>
+      <th><%= sortable "total_amount_nqt", "Amount" %></th>
+      <th><%= sortable "total_fee_nqt", "Fee" %></th>
+      <th><%= sortable "total_pos_nqt", "POS Reward" %></th>
     </tr>
   </thead>
   <tbody>

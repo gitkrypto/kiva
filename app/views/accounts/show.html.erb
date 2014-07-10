@@ -43,7 +43,7 @@
 </h1>
 <div class="row">
   <div class="col-md-12">
-    <%= will_paginate(@transactions) %>
+    <%= will_paginate(@transactions, :param_name => :t_page) %>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -53,6 +53,7 @@
           <th>Account</th>
           <th>Amount</th>
           <th>Fee</th>
+          <th>Type</th>
         </tr>
       </thead>
       <tbody>
@@ -65,6 +66,7 @@
               <td><%= link_to_account transaction.recipient %></td>
               <td><%= convert_to_nxt( - transaction.amount_nqt) %></td>
               <td><%= convert_to_nxt(transaction.fee_nqt) %></td>
+              <td><%= transaction_type_to_s(transaction) %></td>
             <% else %>
               <td><img width="24px" src="<%= image_path('arrow_left.png') %>"></td>
               <td><%= convert_timestamp transaction.timestamp %></td>
@@ -72,6 +74,7 @@
               <td><%= link_to_account transaction.sender %></td>
               <td><%= convert_to_nxt transaction.amount_nqt %></td>
               <td><%= convert_to_nxt transaction.fee_nqt %></td>
+              <td><%= transaction_type_to_s(transaction) %></td>
             <% end %>
           </tr>
         <% end %>
@@ -80,4 +83,31 @@
   </div>
 </div>
 
-
+<h1>
+  <small>Aliases</small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <%= will_paginate(@aliases, :param_name => :a_page) %>
+    <table class="table table-striped" id="blocks">
+      <thead>
+        <tr>
+          <th>Alias</th>
+          <th>URI</th>
+          <th>Owner</th>
+          <th>Transaction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @aliases.each do |a| %>
+          <tr>
+            <td><%= link_to_alias a %></td>
+            <td><%= a.uri %></td>
+            <td><%= link_to_account a.owner %></td>
+            <td><%= link_to_transaction a.txn %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

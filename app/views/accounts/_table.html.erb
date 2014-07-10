@@ -1,10 +1,10 @@
 <table class="table table-striped" id="blocks">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>ID (numeric)</th>
-      <th>POS Rewards</th>
-      <th align="right">Balance</th>
+      <th><%= sortable "native_id_rs", "ID" %></th>
+      <th><%= sortable "native_id", "ID (numeric)" %></th>
+      <th><%= sortable "pos_balance_nqt", "POS Rewards" %></th>
+      <th align="right"><%= sortable "balance_nqt", "Balance" %></th>
     </tr>
   </thead>
   <tbody>

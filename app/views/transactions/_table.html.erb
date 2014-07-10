@@ -1,13 +1,14 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Timestamp</th>
-      <th>ID</th>
+      <th><%= sortable "timestamp", "Timestamp" %></th>
+      <th><%= sortable "id", "ID" %></th>
       <!-- <th>Block</th> -->
-      <th>Sender</th>
-      <th>Recipient</th>
-      <th>Amount</th>
-      <th>Fee</th>
+      <th><%= sortable "sender", "Sender" %></th>
+      <th><%= sortable "recipient", "Recipient" %></th>
+      <th><%= sortable "amount_nqt", "Amount" %></th>
+      <th><%= sortable "fee_nqt", "Fee" %></th>
+      <th><%= sortable "txn_type", "Type" %></th>
     </tr>
   </thead>
 
@@ -21,6 +22,7 @@
         <td><%= link_to_account transaction.recipient %></td>
         <td><%= convert_to_nxt transaction.amount_nqt %></td>
         <td><%= convert_to_nxt transaction.fee_nqt %></td>
+        <td><%= transaction_type_to_s(transaction) %></td>
       </tr>
     <% end %>
   </tbody>

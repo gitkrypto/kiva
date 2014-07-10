@@ -2,7 +2,7 @@ require 'rake'
 require 'nxt'
 
 namespace :backgroundjob do
-  
+
   # Polls the nxt node for new blocks
   task :poll_blocks, [:interval,:verbose] => [:environment]  do |t, args|
     interval = args[:interval] || 5

@@ -1,8 +1,9 @@
 class TransactionsController < ApplicationController
   include ApplicationHelper
+  helper_method :sort_column, :sort_direction    
 
   def index
-    @transactions = Transaction.order('block DESC').paginate(page: params[:page], :per_page => 20)
+    @transactions = Transaction.order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
   end
 
   def show
@@ -32,4 +33,12 @@ class TransactionsController < ApplicationController
     def transaction_params
       params.require(:transaction).permit(:native_id, :block, :sender, :recipient, :amount_nqt, :fee_nqt)
     end
+
+    def sort_column
+      Transaction.column_names.include?(params[:sort]) ? params[:sort] : "block"
+    end
+    
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+    end          
 end

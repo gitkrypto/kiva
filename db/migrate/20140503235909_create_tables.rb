@@ -7,13 +7,16 @@ class CreateTables < ActiveRecord::Migration
       t.decimal     :balance_nqt,           :precision => 20, :scale => 0, :default => 0
       t.decimal     :pos_balance_nqt,       :precision => 20, :scale => 0, :default => 0
       t.string      :public_key
-      t.string      :passphrase
+      t.string      :passphrase 
+      t.integer     :height,                default: 0
     end    
     add_index :accounts, :native_id, unique: true
     
     create_table :blocks do |t|
       t.string      :native_id
       t.integer     :generator              # generator account
+      t.string      :generator_id
+      t.string      :generator_id_rs
       t.integer     :timestamp,             default: 0
       t.integer     :height
       t.integer     :payload_length,        default: 0
@@ -39,8 +42,14 @@ class CreateTables < ActiveRecord::Migration
       t.integer     :block                  # foreign key to blocks
       t.integer     :sender                 # foreign key to accounts
       t.integer     :recipient              # foreign key to accounts
+      t.string      :sender_id
+      t.string      :recipient_id
+      t.string      :sender_id_rs
+      t.string      :recipient_id_rs
       t.decimal     :amount_nqt,            :precision => 20, :scale => 0, :default => 0
       t.decimal     :fee_nqt,               :precision => 20, :scale => 0, :default => 0
+      t.integer     :txn_type
+      t.integer     :txn_subtype
     end
     add_index :transactions, :native_id, unique: true
     add_index :transactions, :block
@@ -72,7 +81,18 @@ class CreateTables < ActiveRecord::Migration
     add_index :unconfirmed_transactions, :sender
     add_index :unconfirmed_transactions, :recipient
     add_index :unconfirmed_transactions, :native_id, unique: true   
-    
+
+    create_table :aliases do |t|
+      t.string      :alias
+      t.string      :uri
+      t.integer     :txn                    # foreign key to transactions
+      t.integer     :owner                  # foreign key to accounts
+      t.integer     :block
+    end
+    add_index :aliases, :alias
+    add_index :aliases, :txn
+    add_index :aliases, :owner
+
   end
 end
 

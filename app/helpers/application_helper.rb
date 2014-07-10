@@ -48,6 +48,7 @@ module ApplicationHelper
   # app/helpers/application_helper.rb
   def link_to_account(account, name=nil)
     id        = account.native_id_rs
+    name      = ('GENESIS') unless id != 'FIM-MRCC-2YLS-8M54-3CMAJ' or !name.nil?
     url       = "/accounts/#{id}"
     href_attr = "href=\"#{html_escape(url)}\""
     "<a #{href_attr}>#{html_escape(name || id)}</a>".html_safe    
@@ -67,4 +68,93 @@ module ApplicationHelper
     "<a #{href_attr}>#{html_escape(name || id)}</a>".html_safe       
   end
     
+  def link_to_alias(_alias, name=nil)
+    id        = _alias.alias
+    url       = "/aliases/#{id}"
+    href_attr = "href=\"#{html_escape(url)}\""
+    "<a #{href_attr}>#{html_escape(name || id)}</a>".html_safe       
+  end    
+
+  def sortable(column, title = nil)
+    title ||= column.titleize
+    css_class = column == sort_column ? "current #{sort_direction}" : nil
+    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
+    link_to title, {:sort => column, :direction => direction}, {:class => css_class}
+  end  
+
+  TYPE_PAYMENT = 0
+  TYPE_MESSAGING = 1
+  TYPE_COLORED_COINS = 2
+  TYPE_DIGITAL_GOODS = 3
+  TYPE_ACCOUNT_CONTROL = 4
+
+  SUBTYPE_PAYMENT_ORDINARY_PAYMENT = 0
+
+  SUBTYPE_MESSAGING_ARBITRARY_MESSAGE = 0
+  SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT = 1
+  SUBTYPE_MESSAGING_POLL_CREATION = 2
+  SUBTYPE_MESSAGING_VOTE_CASTING = 3
+  SUBTYPE_MESSAGING_HUB_ANNOUNCEMENT = 4
+  SUBTYPE_MESSAGING_ACCOUNT_INFO = 5
+
+  SUBTYPE_COLORED_COINS_ASSET_ISSUANCE = 0
+  SUBTYPE_COLORED_COINS_ASSET_TRANSFER = 1
+  SUBTYPE_COLORED_COINS_ASK_ORDER_PLACEMENT = 2
+  SUBTYPE_COLORED_COINS_BID_ORDER_PLACEMENT = 3
+  SUBTYPE_COLORED_COINS_ASK_ORDER_CANCELLATION = 4
+  SUBTYPE_COLORED_COINS_BID_ORDER_CANCELLATION = 5
+
+  SUBTYPE_DIGITAL_GOODS_LISTING = 0
+  SUBTYPE_DIGITAL_GOODS_DELISTING = 1
+  SUBTYPE_DIGITAL_GOODS_PRICE_CHANGE = 2
+  SUBTYPE_DIGITAL_GOODS_QUANTITY_CHANGE = 3
+  SUBTYPE_DIGITAL_GOODS_PURCHASE = 4
+  SUBTYPE_DIGITAL_GOODS_DELIVERY = 5
+  SUBTYPE_DIGITAL_GOODS_FEEDBACK = 6
+  SUBTYPE_DIGITAL_GOODS_REFUND = 7    
+
+  def transaction_type_to_s(transaction)
+    case transaction.txn_type
+    when TYPE_PAYMENT
+      case transaction.txn_subtype
+      when SUBTYPE_PAYMENT_ORDINARY_PAYMENT
+        return "Payment"
+      end
+    when TYPE_MESSAGING
+      case transaction.txn_subtype
+      when SUBTYPE_MESSAGING_ARBITRARY_MESSAGE
+        return "AM"
+      when SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT
+        return "Alias"
+      when SUBTYPE_MESSAGING_POLL_CREATION
+        return "Poll"
+      when SUBTYPE_MESSAGING_VOTE_CASTING
+        return "Vote"
+      when SUBTYPE_MESSAGING_HUB_ANNOUNCEMENT
+        return "Hub"
+      when SUBTYPE_MESSAGING_ACCOUNT_INFO
+        return "Account Info"
+      end
+    when TYPE_COLORED_COINS
+      case transaction.txn_subtype
+      when SUBTYPE_COLORED_COINS_ASSET_ISSUANCE
+        return "Asset"
+      when SUBTYPE_COLORED_COINS_ASSET_TRANSFER
+        return "Asset Transfer"
+      when SUBTYPE_COLORED_COINS_ASK_ORDER_PLACEMENT
+        return "Ask"
+      when SUBTYPE_COLORED_COINS_BID_ORDER_PLACEMENT
+        return "Bid"
+      when SUBTYPE_COLORED_COINS_ASK_ORDER_CANCELLATION
+        return "Ask Cancel"
+      when SUBTYPE_COLORED_COINS_BID_ORDER_CANCELLATION
+        return "Bid Cancel"
+      end
+    when TYPE_DIGITAL_GOODS
+      return "DG"
+    when TYPE_ACCOUNT_CONTROL
+      return "AC"
+    end
+    return ""
+  end
 end

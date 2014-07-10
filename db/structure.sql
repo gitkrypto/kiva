@@ -30,8 +30,30 @@ CREATE TABLE `accounts` (
   `pos_balance_nqt` decimal(20,0) DEFAULT '0',
   `public_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `passphrase` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `height` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_accounts_on_native_id` (`native_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `aliases`
+--
+
+DROP TABLE IF EXISTS `aliases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `aliases` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `uri` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `txn` int(10) DEFAULT NULL,
+  `owner` int(10) DEFAULT NULL,
+  `block` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_aliases_on_alias` (`alias`),
+  KEY `index_aliases_on_txn` (`txn`),
+  KEY `index_aliases_on_owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,6 +68,8 @@ CREATE TABLE `blocks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `native_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `generator` int(10) DEFAULT NULL,
+  `generator_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `generator_id_rs` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `timestamp` int(10) DEFAULT '0',
   `height` int(10) DEFAULT NULL,
   `payload_length` int(10) DEFAULT '0',
@@ -119,8 +143,14 @@ CREATE TABLE `transactions` (
   `block` int(10) DEFAULT NULL,
   `sender` int(10) DEFAULT NULL,
   `recipient` int(10) DEFAULT NULL,
+  `sender_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `recipient_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sender_id_rs` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `recipient_id_rs` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount_nqt` decimal(20,0) DEFAULT '0',
   `fee_nqt` decimal(20,0) DEFAULT '0',
+  `txn_type` int(10) DEFAULT NULL,
+  `txn_subtype` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_transactions_on_native_id` (`native_id`),
   KEY `index_transactions_on_block` (`block`),
@@ -160,6 +190,6 @@ CREATE TABLE `unconfirmed_transactions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-06-27 19:56:21
+-- Dump completed on 2014-07-10 16:28:10
 INSERT INTO schema_migrations (version) VALUES ('20140503235909');
 

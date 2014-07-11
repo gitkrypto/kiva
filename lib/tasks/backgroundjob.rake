@@ -9,6 +9,13 @@ namespace :backgroundjob do
     NXT.verbose = args[:verbose] || false
     NXT::BlockPoller.new.perform(interval)
   end
+
+  # Updates accounts in the stale_accounts table
+  task :update_accounts, [:interval,:verbose] => [:environment]  do |t, args|
+    interval = args[:interval] || 5
+    NXT.verbose = args[:verbose] || false
+    NXT::AccountUpdater.new.perform(interval)
+  end  
   
     # Polls the nxt node for new blocks
   task :poll_transactions, [:interval,:verbose] => [:environment]  do |t, args|

@@ -69,6 +69,15 @@ module NXT
   def self.log(sender, msg)
     puts "#{Time.now} [#{sender}] #{msg}"
   end
+
+  def self.is_error(response)
+    response['errorCode'] || response['errorDescription'] || response['error']
+  end    
+
+  def self.is_alias(transaction)
+    transaction.txn_type == TYPE_MESSAGING && transaction.txn_subtype == SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT
+  end
+  
 end
 
 require 'nxt/api'

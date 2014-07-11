@@ -5,17 +5,9 @@ module NXT
       begin
         loop do
           opts = get_new_blocks
-
           if opts[:blockIds]
-            if remove_orphaned_blocks(opts)
-              rescan
-            end
-            
-            # Download all new blocks      
-            opts[:blockIds].each_with_index do |native_id, index|
-              download_block(native_id) unless get_block(native_id)
-            end
-
+            remove_orphaned_blocks(opts)
+            add_new_blocks(opts)
           end
           puts "Going to sleep ... #{interval} seconds" if NXT.verbose
           sleep interval.to_i
@@ -24,10 +16,6 @@ module NXT
         log("Error: #{$!}\nBacktrace:\n\t#{e.backtrace.join("\n\t")}")
         throw e
       end
-    end
-
-    def is_error(response)
-      response['errorCode'] || response['errorDescription']
     end
     
     def log(msg)
@@ -39,17 +27,11 @@ module NXT
       fromHeight = [0, current_height-50].max
       toHeight   = fromHeight + 100
       response   = NXT::api.getBlocksIdsFromHeight(fromHeight, toHeight)
-      if is_error(response)
-        {
-          errorCode:  response['errorCode'],
-          errorDescription:  response['errorDescription'],
-        }
-      else
-        {
-          blockIds:   response['blockIds'],
-          fromHeight: response['fromHeight']
-        }
-      end
+      return {} if NXT.is_error(response)
+      {
+        blockIds:   response['blockIds'],
+        fromHeight: response['fromHeight']
+      }
     end
 
     # Scan blockIds, all new blocks and their transactions are added
@@ -60,15 +42,26 @@ module NXT
       end
     end
 
+    # Add the account to StaleAccount
+    def add_affected_account(native_id)
+      StaleAccount.where(:native_id => native_id).first_or_create
+    end
+
     # Downloads and stores a Block
     def download_block(native_id)
       json = NXT::api.getBlock(native_id)
+      return if NXT.is_error(json) || !json['transactions']
+
       prev_block  = get_block(json['previousBlock'])
+
+      generator = get_account(json['generator'], json['generatorRS'], json['height'])
+      throw "No generator block=#{native_id}" unless generator
+      add_affected_account(json['generator'])
 
       # Create a new db block
       block       = Block.create!({
         :native_id        => native_id,
-        :generator        => get_account(json['generator'], json['generatorRS'], json['height']),
+        :generator        => generator,
         :generator_id     => json['generator'],
         :timestamp        => json['timestamp'],
         :height           => json['height'],
@@ -90,22 +83,28 @@ module NXT
         prev_block.save
       end
 
+      # Downloads and stores all Transactions
       json['transactions'].each do |native_transaction_id|
         download_transaction(native_transaction_id, block)
       end
-      
-      apply(block)
     end
 
     # Downloads and stores a Transaction
     def download_transaction(native_id, block)
       json = NXT::api.getTransaction(native_id)
-      ActiveRecord::Base.transaction do
-        sender      = get_account(json['sender'], json['senderRS'], block.height)
-        recipient   = get_account(json['recipient'], json['recipientRS'], block.height)
+      return if NXT.is_error(json)
 
-        throw "No sender txn=#{native_id} block=#{block.native_id}" unless sender
-        throw "No recipient txn=#{native_id} block=#{block.native_id}" unless recipient
+      sender      = get_account(json['sender'], json['senderRS'], block.height)
+      recipient   = get_account(json['recipient'], json['recipientRS'], block.height)
+
+      throw "No sender txn=#{native_id} block=#{block.native_id}" unless sender
+      throw "No recipient txn=#{native_id} block=#{block.native_id}" unless recipient
+
+      ActiveRecord::Base.transaction do
+
+        # Add both sender and recipient to affected_accounts so they can be obtained later
+        add_affected_account(json['sender'])
+        add_affected_account(json['recipient'])
 
         transaction = Transaction.create!({
           :native_id        => native_id,
@@ -121,7 +120,7 @@ module NXT
           :txn_subtype      => json['subtype']
         })
 
-        if is_alias(transaction) 
+        if NXT.is_alias(transaction) 
           Alias.create!({
             :alias          => json['attachment']['alias'],
             :uri            => json['attachment']['uri'],
@@ -152,6 +151,9 @@ module NXT
 
           if block.native_id != native_id
 
+            # Add block generator to affected_accounts
+            add_affected_account(block.generator_id)
+
             # Selects all blocks starting at from_height and beyond
             blocks = Block.where('height >= ?', height).order('height ASC')
 
@@ -164,6 +166,11 @@ module NXT
 
             # Undo block then remove from Transaction and Block tables
             blocks.find_each do |block|
+              Transaction.where(:block => block).find_each do |t|
+                # Add both sender and recipient to affected_accounts so they can be obtained later
+                add_affected_account(t.recipient_id)
+                add_affected_account(t.sender_id)
+               end
               Transaction.where(:block => block).delete_all
               Alias.where(:block => block).delete_all
             end
@@ -173,16 +180,6 @@ module NXT
         end
       end
       return false
-    end
-
-    def rescan
-      log("Rescan start")
-      Account.delete_all
-      Alias.delete_all        
-      Block.find_each do |block|
-        apply(block)
-      end
-      log("Rescan complete")
     end
     
     def logger
@@ -207,47 +204,7 @@ module NXT
 
     def get_block(native_id)
       Block.where(:native_id => native_id).first
-    end
-    
-    def apply(block)
-      generator = block.generator || begin 
-        block.generator = get_account(block.generator_id, block.generator_id_rs, block.height)
-        block.save
-      end
+    end      
 
-      generator.balance_nqt     += block.total_pos_nqt + block.total_fee_nqt
-      generator.pos_balance_nqt += block.total_pos_nqt
-      generator.save
-    
-      Transaction.where(block: block).each do |t|
-        recipient = t.recipient || begin 
-          t.recipient = get_account(t.recipient_id, t.recipient_id_rs, block.height)
-          t.save
-        end
-
-        sender    = t.sender || begin 
-          t.sender = get_account(t.sender_id, t.sender_id_rs, block.height)
-          t.save
-        end
-
-        # Always deduct the fee, this works for all transactions
-        sender.balance_nqt  -= t.amount_nqt + t.fee_nqt
-        sender.save
-
-        if is_payment(t)
-          recipient.balance_nqt += t.amount_nqt 
-          recipient.save
-        end
-      end 
-    end
-
-    def is_payment(transaction)
-      transaction.txn_type == TYPE_PAYMENT && transaction.txn_subtype == SUBTYPE_PAYMENT_ORDINARY_PAYMENT
-    end
-
-    def is_alias(transaction)
-      transaction.txn_type == TYPE_MESSAGING && transaction.txn_subtype == SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT
-    end
-      
   end
 end

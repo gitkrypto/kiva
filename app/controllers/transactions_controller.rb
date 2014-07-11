@@ -35,7 +35,7 @@ class TransactionsController < ApplicationController
     end
 
     def sort_column
-      Transaction.column_names.include?(params[:sort]) ? params[:sort] : "block"
+      Transaction.column_names.include?(params[:sort]) ? params[:sort] : "timestamp"
     end
     
     def sort_direction

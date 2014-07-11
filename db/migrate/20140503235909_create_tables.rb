@@ -11,7 +11,7 @@ class CreateTables < ActiveRecord::Migration
       t.integer     :height,                default: 0
     end    
     add_index :accounts, :native_id, unique: true
-    
+
     create_table :blocks do |t|
       t.string      :native_id
       t.integer     :generator              # generator account
@@ -92,6 +92,11 @@ class CreateTables < ActiveRecord::Migration
     add_index :aliases, :alias
     add_index :aliases, :txn
     add_index :aliases, :owner
+
+    create_table :stale_accounts do |t|
+      t.string      :native_id
+    end
+    add_index :stale_accounts, :native_id
 
   end
 end

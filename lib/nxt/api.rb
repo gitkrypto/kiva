@@ -54,5 +54,13 @@ module NXT
       get("sendMoney", :secretPhrase => secretPhrase, :recipient => recipient, :amountNQT => amountNQT,
         :feeNQT => feeNQT, :deadline => deadline, :referencedTransaction => referencedTransaction)
     end
+
+    # balanceNQT, unconfirmedBalanceNQT, effectiveBalanceNXT, forgedBalanceNQT, guaranteedBalanceNQT,
+    # account, accountRS, publicKey, name, description, currentLessee, currentLeasingHeightFrom, currentLeasingHeightTo
+    # nextLessee, nextLeasingHeightFrom, nextLeasingHeightTo, lessors, asset, balanceQNT, assetBalances,
+    # asset, unconfirmedBalanceQNT, unconfirmedAssetBalances
+    def getAccount(native_id)
+      get("getAccount", :account => native_id)
+    end
   end
 end

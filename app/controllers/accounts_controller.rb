@@ -10,8 +10,8 @@ class AccountsController < ApplicationController
     @account = (Account.where(:native_id => params[:id]).first rescue nil) unless @account
     @account = Account.where(:native_id_rs => params[:id]).first unless @account   
       
-    @transactions = Transaction.where("sender = #{@account.id} OR recipient = #{@account.id}").paginate(page: params[:t_page], :per_page => 10)
-    @aliases      = Alias.where("owner = #{@account.id}").paginate(page: params[:a_page], :per_page => 20)
+    @transactions = Transaction.where("sender = #{@account.id} OR recipient = #{@account.id}").order('timestamp DESC').paginate(page: params[:t_page], :per_page => 10)
+    @aliases      = Alias.where("owner = #{@account.id}").order('alias DESC').paginate(page: params[:a_page], :per_page => 20)
   end
   
   private

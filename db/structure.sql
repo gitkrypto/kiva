@@ -130,6 +130,21 @@ CREATE TABLE `schema_migrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `stale_accounts`
+--
+
+DROP TABLE IF EXISTS `stale_accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `stale_accounts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `native_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_stale_accounts_on_native_id` (`native_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `transactions`
 --
 
@@ -190,6 +205,6 @@ CREATE TABLE `unconfirmed_transactions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-10 23:33:10
+-- Dump completed on 2014-07-11 14:15:09
 INSERT INTO schema_migrations (version) VALUES ('20140503235909');
 

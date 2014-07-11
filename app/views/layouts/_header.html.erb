@@ -16,13 +16,23 @@
         </ul>
         <form action="/search" method="GET" class="navbar-form navbar-right navbar-search" role="form">
           <div class="input-group">
+            <select class="form-control" name="type">
+              <option <%= params[:controller] == 'transactions' ? 'selected ' : '' %>value="transaction">Transaction</option>
+              <option <%= params[:controller] == 'accounts' ? 'selected ' : '' %> value="account">Account</option>
+              <option <%= params[:controller] ==  'blocks' ? 'selected ' : '' %> value="block">Block</option>
+              <option <%= params[:controller] ==  'aliases' ? 'selected ' : '' %> value="alias">Alias</option>
+            </select>  
+          </div>
+          <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="search">
             <span class="input-group-btn">
-              <button class="btn btn-default" type="submit">Search</button>
-            </span>
-          </div><!-- /input-group -->
-       </form>
+              <button class="btn btn-default" type="submit">Search</button>              
+            </span>               
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </header>
+
+              

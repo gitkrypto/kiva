@@ -5,6 +5,9 @@ class StaticPagesController < ApplicationController
     @blocks = Block.limit(6).order(sort_column + " " + sort_direction)
     @transactions = Transaction.limit(6).order("timestamp desc")
   end
+
+  def notfound
+  end
     
   private
 

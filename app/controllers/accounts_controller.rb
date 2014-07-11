@@ -5,6 +5,10 @@ class AccountsController < ApplicationController
     @accounts = Account.order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
   end
 
+  def search
+    @accounts = Account.where("native_id LIKE ? OR native_id_rs LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%").order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
+  end    
+
   def show
     @account = Account.find(params[:id]) rescue nil
     @account = (Account.where(:native_id => params[:id]).first rescue nil) unless @account
@@ -18,7 +22,7 @@ class AccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def account_params
-      params.require(:account).permit(:native_id, :balance_nqt, :total_pos_rewards_nqt)
+      params.require(:account).permit(:native_id, :balance_nqt, :total_pos_rewards_nqt, :search)
     end
 
     def sort_column

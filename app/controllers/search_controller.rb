@@ -14,7 +14,8 @@ class SearchController < ApplicationController
       thing = Account.where(:native_id_rs => text).first
       redirect_to account_url(thing) and return if thing   
 
-      redirect_to "/notfound" and return
+      # Full text search
+      redirect_to "/accounts/search/#{ActionView::Base.full_sanitizer.sanitize(text)}" and return
 
     elsif type == 'transaction'
 
@@ -26,7 +27,8 @@ class SearchController < ApplicationController
       thing = nil #Transaction.where(:native_id => text).first
       redirect_to transaction_url(thing) and return if thing
 
-      redirect_to "/notfound" and return
+      # Full text search
+      redirect_to "/transactions/search/#{ActionView::Base.full_sanitizer.sanitize(text)}" and return
 
     elsif type == 'block'
 
@@ -45,15 +47,17 @@ class SearchController < ApplicationController
       thing = Block.where(:block_signature => text).first
       redirect_to block_url(thing) and return if thing
 
-      redirect_to "/notfound" and return
+      # Full text search
+      redirect_to "/blocks/search/#{ActionView::Base.full_sanitizer.sanitize(text)}" and return
 
     elsif type == 'alias'
 
-      # Is it an Alias
-      thing = Alias.where("lower(alias) = ?", text.downcase).first
-      redirect_to "/aliases/#{thing.alias}" and return if thing
+      # # Is it an Alias
+      # thing = Alias.where("lower(alias) = ?", text.downcase).first
+      # redirect_to "/aliases/#{thing.alias}" and return if thing
 
-      redirect_to "/notfound" and return   
+      # Full text search
+      redirect_to "/aliases/search/#{ActionView::Base.full_sanitizer.sanitize(text)}" and return
 
     end
       

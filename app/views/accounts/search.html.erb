@@ -1,0 +1,13 @@
+<% provide(:title, 'Blockexplorer | Accounts | Search') %>
+<div class="alert alert-info" role="alert">
+  <span>Search text <strong><%= ActionView::Base.full_sanitizer.sanitize(params[:search]) %></strong></span>
+</div>
+<h1>
+  <small>Listing Accounts Search Result</small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <%= will_paginate%>
+    <%= render "table" %>
+  </div>
+</div>

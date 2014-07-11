@@ -6,11 +6,15 @@ class TransactionsController < ApplicationController
     @transactions = Transaction.order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
   end
 
+  def search
+    @transactions = Transaction.where("native_id LIKE ?", "%#{params[:search]}%").order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
+  end
+
   def show
     @transaction = Transaction.find(params[:id]) rescue nil   
     @transaction = Transaction.where(:native_id => params[:id]).first unless @transaction
   end
-  
+
   def latest
     transactions = UnconfirmedTransaction.order('id DESC').limit(10)
     result       = []
@@ -31,7 +35,7 @@ class TransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transaction_params
-      params.require(:transaction).permit(:native_id, :block, :sender, :recipient, :amount_nqt, :fee_nqt)
+      params.require(:transaction).permit(:native_id, :block, :sender, :recipient, :amount_nqt, :fee_nqt, :search)
     end
 
     def sort_column

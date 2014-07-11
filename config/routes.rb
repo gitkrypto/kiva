@@ -11,6 +11,11 @@ Rails.application.routes.draw do
 
   get '/notfound',                      to:   'static_pages#notfound'
   
+  get '/transactions/search/:search',   to:   'transactions#search'
+  get '/accounts/search/:search',       to:   'accounts#search'
+  get '/blocks/search/:search',         to:   'blocks#search'
+  get '/aliases/search/:search',        to:   'aliases#search'
+
   get '/search',                        to:   'search#search'
   get '/search/:search',                to:   'search#search'
   

@@ -5,6 +5,10 @@ class BlocksController < ApplicationController
     @blocks = Block.order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
   end
 
+  def search
+    @blocks = Block.where("native_id LIKE ?", "%#{params[:search]}%").order(sort_column + " " + sort_direction).paginate(page: params[:page], :per_page => 20)
+  end  
+
   def show
     @block = Block.find(params[:id]) rescue nil   
     @block = Block.where(:height => params[:id]).first unless @block
@@ -26,7 +30,7 @@ class BlocksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def block_params
-      params.require(:block).permit(:height, :native_id, :account, :payload_size_bytes, :total_amount_nqt, :total_fee_nqt, :total_pos_nqt)
+      params.require(:block).permit(:height, :native_id, :account, :payload_size_bytes, :total_amount_nqt, :total_fee_nqt, :total_pos_nqt, :search)
     end
 
     def sort_column

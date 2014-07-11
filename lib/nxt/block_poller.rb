@@ -121,13 +121,15 @@ module NXT
         })
 
         if NXT.is_alias(transaction) 
-          Alias.create!({
+          attributes = {
             :alias          => json['attachment']['alias'],
             :uri            => json['attachment']['uri'],
             :txn            => transaction,
             :owner          => sender,
-            :block          => block
-          })
+            :block          => block            
+          }
+          _alias = Alias.find_or_create_by(:alias => json['attachment']['alias'])
+          _alias.update(attributes)
         end
       end
     end

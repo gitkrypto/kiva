@@ -80,6 +80,39 @@
 </div>
 
 <h1>
+  <small>Blocks</small>
+</h1>
+<div class="row">
+  <div class="col-md-12">
+    <%= will_paginate(@blocks, :param_name => :b_page) %>
+    <table class="table table-striped" id="blocks">
+      <thead>
+        <tr>
+          <th>Height</th>
+          <th>Time</th>
+          <th>Generator</th>
+          <th>Amount</th>
+          <th>Fee</th>
+          <th>POS Reward</th>          
+        </tr>
+      </thead>
+      <tbody>
+        <% @blocks.each do |block| %>
+          <tr>
+            <td><%= link_to block.height, block %></td>
+            <td><%= convert_timestamp block.timestamp %></td>
+            <td><%= link_to_account block.generator %></td>
+            <td class="align-right" data-amount="<%= block.total_amount_nqt %>"><%= convert_to_nxt block.total_amount_nqt %></td>
+            <td class="align-right"><%= convert_to_nxt block.total_fee_nqt %></td>
+            <td class="align-right"><strong><%= convert_to_nxt block.total_pos_nqt %></strong></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h1>
   <small>Aliases</small>
 </h1>
 <div class="row">

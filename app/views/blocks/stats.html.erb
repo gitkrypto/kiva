@@ -1,0 +1,29 @@
+<% provide(:title, "Blockexplorer Block Stats") %> 
+<h1>
+  <small>Forge Stats</small>
+</h1>
+<div class="alert alert-info" role="alert">
+<span>Forge stats for period <strong><%= convert_timestamp @from_timestamp %></strong> <i>(<%= @from_height %>)</i> to <strong><%= convert_timestamp @to_timestamp %></strong> <i>(<%= @to_height %>)</i></span>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th>Account</th>
+          <th>Blocks</th>
+          <th align="right">POS Reward</th>
+          <th align="right">Balance</th>
+        </tr>
+        <% @stats.each do |stat| %>
+          <tr>
+            <td><%= link_to_account stat[:account] %></td>
+            <td><%= stat[:blocks].count %></td>
+            <td align="right"><strong><%= convert_to_nxt stat[:total_pos_rewards_nqt] %></strong></td>
+            <td align="right"><%= convert_to_nxt stat[:account].balance_nqt %></td>
+          </tr>
+        <% end %>        
+      </tbody>
+    </table>
+  </div>
+</div>

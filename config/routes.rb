@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get '/blocks/search/:search',         to:   'blocks#search'
   get '/aliases/search/:search',        to:   'aliases#search'
 
+  get '/blocks/stats/:from_height/:to_height',  to:   'blocks#stats'
+
   get '/search',                        to:   'search#search'
   get '/search/:search',                to:   'search#search'
   

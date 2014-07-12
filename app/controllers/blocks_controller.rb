@@ -47,6 +47,7 @@ class BlocksController < ApplicationController
     30.times do |i|
       from = current_height - (i*2880)
       to   = [from + 2880, current_height].min
+      next if from == to
       from = [0,from].max
       @periods << [from, to]
       break if from == 0

@@ -83,4 +83,3 @@ end
 require 'nxt/api'
 require 'nxt/block_poller'
 require 'nxt/transaction_sender'
-require 'nxt/runner'

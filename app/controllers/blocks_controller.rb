@@ -18,10 +18,12 @@ class BlocksController < ApplicationController
   def stats
     @from_height = params[:from_height].to_i || 0
     @to_height = params[:to_height].to_i || 2880
+    current_height = Block.order('height DESC').first.height rescue 0
 
     if @from_height == 0 && @to_height == 0
-      @to_height = Block.order('height DESC').first.height rescue 0
+      @to_height = current_height
       @from_height = [@to_height - 2880, 0].max
+      redirect_to "/blocks/stats/#{@from_height}/#{@to_height}" and return
     end
 
     @to_height = [@from_height + @to_height, @from_height + 2880].min
@@ -40,6 +42,15 @@ class BlocksController < ApplicationController
     end
     @stats = @stats.values.sort_by { |s| s[:blocks].count }
     @stats.reverse!   
+
+    @periods = []
+    30.times do |i|
+      from = current_height - (i*2880)
+      to   = [from + 2880, current_height].min
+      from = [0,from].max
+      @periods << [from, to]
+      break if from == 0
+    end
   end
 
   def total_coins

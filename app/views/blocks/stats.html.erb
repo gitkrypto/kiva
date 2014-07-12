@@ -26,4 +26,15 @@
       </tbody>
     </table>
   </div>
+  <div class="col-md-3">
+    <h2>
+      <small>Select a period</small>
+    </h2>
+    <ul>
+    <% @periods.each do |period| %>
+      <li><a href="<%= "/blocks/stats/#{period[0]}/#{period[1]}" %>">Show period <%= "#{period[0]} to #{period[1]}" %></a></li>
+    <% end %>        
+    </ul>
+  </div>
+
 </div>

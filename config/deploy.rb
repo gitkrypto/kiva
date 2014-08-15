@@ -3,7 +3,7 @@ lock '3.1.0'
 
 set :application, 'kiva'
 set :repo_url, 'https://github.com/gitkrypto/kiva.git'
-set :branch, "livenet"
+set :branch, "testnet"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }

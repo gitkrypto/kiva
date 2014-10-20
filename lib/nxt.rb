@@ -57,8 +57,8 @@ module NXT
         '5.101.102.195',
         # vpx-3 512MB   20GB  ams2
         '5.101.102.196',
-        # vpx-3 512MB   20GB  ams2
-        '5.101.102.197',
+#        # vpx-3 512MB   20GB  ams2
+#        '5.101.102.197',
       ]
       API.new(hosts, 7886)
     end
